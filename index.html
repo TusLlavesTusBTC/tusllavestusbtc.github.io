@@ -120,10 +120,10 @@
     }
 
     .hero-logo {
-      height: 260px;
+      height: 286px;
       object-fit: contain;
       mix-blend-mode: screen;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
@@ -146,6 +146,14 @@
       max-width: 780px;
     }
     .hero h1 span { color: var(--color-primary); }
+
+    .tw-cursor {
+      display: inline-block;
+      color: var(--color-primary);
+      font-weight: 400;
+      animation: blink .7s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     .hero-sub {
       font-size: clamp(0.8rem, 1.5vw, 0.95rem);
@@ -479,8 +487,8 @@
 
     <p class="hero-sub">
       Llevamos la custodia de tus bitcoin a otro nivel.<br>
-      A medida, en tu idioma, sin que nadie toque tus claves.<br>
-      No tienes que hacerlo solo, te asistimos en el proceso.
+      No tienes que hacerlo solo, te asistimos en el proceso.<br>
+      <span id="typewriter"></span><span class="tw-cursor">|</span>
     </p>
 
     <div class="hero-ctas">
@@ -790,6 +798,24 @@
         document.getElementById('nav-links').classList.remove('open');
       });
     });
+
+    // Typewriter
+    (function(){
+      const txt = 'A medida, en tu idioma, sin que nadie toque tus claves.';
+      const el  = document.getElementById('typewriter');
+      const cur = document.querySelector('.tw-cursor');
+      let i = 0;
+      function type() {
+        if (i <= txt.length) {
+          el.textContent = txt.slice(0, i++);
+          setTimeout(type, 38);
+        } else {
+          cur.style.animation = 'none';
+          cur.style.opacity   = '0';
+        }
+      }
+      setTimeout(type, 900);
+    })();
 
     // Botón rotativo con UTMs
     const BASE = 'https://cal.com/TusLlavesTusBTC/15?utm_source=landing&utm_medium=hero&utm_campaign=llamada';
