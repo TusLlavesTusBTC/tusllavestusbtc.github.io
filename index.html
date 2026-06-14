@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tus Llaves, Tus Bitcoin. — TLT₿</title>
+  <meta name="description" content="Custodia Bitcoin a medida para individuos, familias y empresas en LATAM. Nunca tocamos tus claves.">
+  <meta property="og:title" content="Tus Llaves, Tus Bitcoin.">
+  <meta property="og:description" content="Llevamos tu autocustodia Bitcoin al siguiente nivel. No tienes que hacerlo solo.">
+  <meta property="og:image" content="logo-TLTBTC.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Meta Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','3131635353891834');fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=3131635353891834&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXXKGQ766Q"></script>
+  <script>
+    window.dataLayer=window.dataLayer||[];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());gtag('config','G-VXXKGQ766Q');
+  </script>
+
+  <style>
+    :root {
+      --color-primary:        #fe5100;
+      --color-bg:             #171616;
+      --color-bg2:            #1e1d1d;
+      --color-bg3:            #252424;
+      --color-accent:         #00c993;
+      --color-light:          #efeeea;
+      --color-text:           #FFFFFF;
+      --color-text-secondary: #a0a0a0;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(23,22,22,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(254,81,0,0.15);
+    }
+    .nav-logo img {
+      height: 40px;
+      object-fit: contain;
+      mix-blend-mode: screen;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--color-text); }
+    .nav-cta {
+      background: var(--color-primary);
+      color: var(--color-text) !important;
+      padding: 8px 18px;
+      border-radius: 6px;
+    }
+    .nav-cta:hover { background: #d94400; color: var(--color-text) !important; }
+    .nav-burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: var(--color-text); border-radius: 2px; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-bg-circle-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(254,81,0,0.08) 0%, transparent 70%);
+      top: -100px; right: -150px;
+    }
+    .hero-bg-circle-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,201,147,0.05) 0%, transparent 70%);
+      bottom: 0; left: -100px;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,201,147,0.1);
+      border: 1px solid rgba(0,201,147,0.3);
+      color: var(--color-accent);
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 99px;
+      margin-bottom: 28px;
+    }
+    .hero-badge::before { content: '●'; font-size: 0.5rem; }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      max-width: 780px;
+    }
+    .hero h1 span { color: var(--color-primary); }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--color-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      font-weight: 400;
+    }
+
+    .hero-ctas {
+      display: flex; flex-wrap: wrap;
+      gap: 14px; justify-content: center;
+      margin-bottom: 60px;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      padding: 16px 28px; border-radius: 8px;
+      text-decoration: none;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .btn-primary:hover { background: #d94400; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent;
+      color: var(--color-text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 0.9rem;
+      padding: 15px 28px; border-radius: 8px;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--color-text); transform: translateY(-1px); }
+
+    .hero-stats {
+      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 1.8rem; font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem; color: var(--color-text-secondary);
+      font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; margin-top: 4px;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 80px 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      color: var(--color-text-secondary);
+      font-size: 1rem; max-width: 560px;
+      margin-bottom: 48px;
+    }
+
+    /* ── PARA QUIÉN ── */
+    .tipos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .tipo-card {
+      background: var(--color-bg2);
+      border: 1.5px solid var(--color-bg3);
+      border-radius: 16px;
+      padding: 32px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .tipo-card:hover { border-color: var(--color-primary); transform: translateY(-3px); }
+    .tipo-icon {
+      font-size: 2rem; margin-bottom: 16px;
+      display: block;
+    }
+    .tipo-title {
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .tipo-desc {
+      font-size: 0.82rem; color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── QUÉ HACEMOS ── */
+    .servicios-bg { background: var(--color-bg2); }
+    .servicios-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .servicio-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 20px;
+      background: var(--color-bg);
+      border-radius: 12px;
+      border: 1px solid var(--color-bg3);
+    }
+    .servicio-check {
+      width: 24px; height: 24px; min-width: 24px;
+      background: rgba(0,201,147,0.12);
+      border: 1.5px solid var(--color-accent);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-accent);
+      font-size: 0.75rem; font-weight: 700;
+      margin-top: 2px;
+    }
+    .servicio-text { font-size: 0.88rem; line-height: 1.5; }
+    .servicio-title { font-weight: 700; margin-bottom: 4px; }
+    .servicio-desc { color: var(--color-text-secondary); font-size: 0.8rem; }
+
+    /* ── CÓMO FUNCIONA ── */
+    .pasos {
+      display: flex; flex-direction: column; gap: 0;
+      position: relative;
+    }
+    .pasos::before {
+      content: '';
+      position: absolute; left: 19px; top: 24px; bottom: 24px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--color-primary), transparent);
+    }
+    .paso {
+      display: flex; gap: 20px;
+      padding: 20px 0;
+    }
+    .paso-num {
+      width: 40px; height: 40px; min-width: 40px;
+      background: var(--color-bg2);
+      border: 2px solid var(--color-primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800;
+      color: var(--color-primary);
+      position: relative; z-index: 1;
+    }
+    .paso-content { padding-top: 8px; }
+    .paso-title { font-weight: 700; margin-bottom: 4px; }
+    .paso-desc { font-size: 0.85rem; color: var(--color-text-secondary); }
+
+    /* ── TIERS ── */
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+    .tier-card {
+      background: var(--color-bg2);
+      border: 1.5px solid var(--color-bg3);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .tier-card:hover { transform: translateY(-3px); }
+    .tier-card.featured {
+      border-color: var(--color-primary);
+      background: rgba(254,81,0,0.04);
+    }
+    .tier-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 99px;
+    }
+    .tier-name {
+      font-size: 1.1rem; font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .tier-price {
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--color-primary);
+      margin: 12px 0;
+    }
+    .tier-price span { font-size: 0.85rem; font-weight: 400; color: var(--color-text-secondary); }
+    .tier-desc { font-size: 0.8rem; color: var(--color-text-secondary); margin-bottom: 20px; }
+    .tier-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .tier-features li {
+      font-size: 0.82rem;
+      display: flex; gap: 8px; align-items: flex-start;
+    }
+    .tier-features li::before { content: '✓'; color: var(--color-accent); font-weight: 700; flex-shrink: 0; }
+
+    /* ── CTA FINAL ── */
+    .cta-section {
+      background: var(--color-bg2);
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(254,81,0,0.08) 0%, rgba(0,201,147,0.05) 100%);
+      border: 1.5px solid rgba(254,81,0,0.2);
+      border-radius: 24px;
+      padding: 60px 40px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-box h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .cta-box p {
+      color: var(--color-text-secondary);
+      margin-bottom: 36px;
+      font-size: 0.95rem;
+    }
+    .cta-btns {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* ── REDES ── */
+    .redes-section { padding: 48px 24px; text-align: center; }
+    .redes-title {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--color-text-secondary);
+      margin-bottom: 20px;
+    }
+    .redes-links {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+    }
+    .red-link {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 16px;
+      background: var(--color-bg2);
+      border: 1px solid var(--color-bg3);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--color-text-secondary);
+      font-size: 0.78rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .red-link:hover { border-color: var(--color-primary); color: var(--color-text); }
+    .red-link svg { width: 16px; height: 16px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--color-bg3);
+      padding: 28px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo img { height: 32px; mix-blend-mode: screen; }
+    .footer-text {
+      font-size: 0.75rem; color: var(--color-text-secondary);
+      text-align: center; flex: 1;
+    }
+    .footer-lema {
+      font-size: 0.75rem; font-weight: 700;
+      color: var(--color-primary);
+      font-style: italic;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex; flex-direction: column;
+        position: fixed; top: 72px; left: 0; right: 0;
+        background: var(--color-bg);
+        border-bottom: 1px solid var(--color-bg3);
+        padding: 20px 24px; gap: 16px;
+      }
+      .nav-burger { display: flex; }
+
+      .tipos-grid { grid-template-columns: 1fr; }
+      .servicios-list { grid-template-columns: 1fr; }
+      .tiers-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 24px; }
+      .cta-box { padding: 40px 24px; }
+      footer { justify-content: center; text-align: center; }
+      .footer-logo { display: none; }
+    }
+    @media (max-width: 480px) {
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img src="logo-TLTBTC.png" alt="TLT₿">
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#para-quien">¿Para quién?</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#precios">Precios</a></li>
+      <li><a href="https://tusllavestusbtc.github.io/formulario-perfil/?utm_source=landing&utm_medium=nav&utm_campaign=perfil" class="nav-cta">Empezar</a></li>
+    </ul>
+    <div class="nav-burger" id="nav-burger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg-circle hero-bg-circle-1"></div>
+    <div class="hero-bg-circle hero-bg-circle-2"></div>
+
+    <div class="hero-badge">Autocustodia Bitcoin · LATAM</div>
+
+    <h1>
+      Tus llaves.<br>
+      <span>Tu Bitcoin.</span><br>
+      Tu soberanía.
+    </h1>
+
+    <p class="hero-sub">
+      Llevamos tu custodia Bitcoin al siguiente nivel.
+      A medida, en tu idioma, sin que nadie toque tus claves.
+    </p>
+
+    <div class="hero-ctas">
+      <a
+        href="https://tusllavestusbtc.github.io/formulario-perfil/?utm_source=landing&utm_medium=hero&utm_campaign=perfil"
+        class="btn-primary"
+        onclick="fbq('track','Lead',{content_name:'hero_form_perfil'})"
+      >
+        🔒 Descubrí tu nivel de custodia
+      </a>
+      <a
+        href="https://cal.com/tltbtc/15?utm_source=landing&utm_medium=hero&utm_campaign=llamada"
+        class="btn-secondary"
+        target="_blank"
+        onclick="fbq('track','Schedule',{content_name:'hero_cal'})"
+      >
+        Hablar con el equipo →
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Tiers de servicio</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Acceso a tus claves</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">LATAM</div>
+        <div class="stat-label">En tu idioma</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section id="para-quien">
+    <div class="container">
+      <div class="section-label">¿Para quién?</div>
+      <h2 class="section-title">Tu Bitcoin merece<br>el nivel correcto de protección.</h2>
+      <p class="section-sub">
+        No importa si estás empezando o si ya tenés años en el ecosistema.
+        Diseñamos la custodia para tu situación específica.
+      </p>
+      <div class="tipos-grid">
+        <div class="tipo-card">
+          <span class="tipo-icon">🧑</span>
+          <div class="tipo-title">Personal</div>
+          <p class="tipo-desc">
+            Holder individual que quiere pasar del exchange a la autocustodia,
+            o mejorar un setup existente sin puntos únicos de fallo.
+          </p>
+        </div>
+        <div class="tipo-card">
+          <span class="tipo-icon">👨‍👩‍👧</span>
+          <div class="tipo-title">Familiar</div>
+          <p class="tipo-desc">
+            Patrimonio familiar en Bitcoin. Plan de herencia, acceso de emergencia
+            para tu pareja o hijos, sin depender de terceros.
+          </p>
+        </div>
+        <div class="tipo-card">
+          <span class="tipo-icon">🏢</span>
+          <div class="tipo-title">Empresa</div>
+          <p class="tipo-desc">
+            Tesorería corporativa en Bitcoin. Política interna de custodia,
+            multifirma con múltiples firmantes, auditoría anual.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" class="servicios-bg">
+    <div class="container">
+      <div class="section-label">Qué hacemos</div>
+      <h2 class="section-title">Todo lo que necesitás<br>para custodiar bien.</h2>
+      <p class="section-sub">
+        Cada servicio está pensado para eliminar el punto único de fallo más importante
+        en tu situación actual.
+      </p>
+      <div class="servicios-list">
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Setup de autocustodia</div>
+            <div class="servicio-desc">Hardware wallet configurada correctamente desde cero, con backup verificado.</div>
+          </div>
+        </div>
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Auditoría del setup actual</div>
+            <div class="servicio-desc">Revisamos tu custodia existente y encontramos los gaps antes de que sea tarde.</div>
+          </div>
+        </div>
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Plan de herencia</div>
+            <div class="servicio-desc">Documento técnico-legal para que tu familia pueda acceder si algo te pasa. Con simulacro incluido.</div>
+          </div>
+        </div>
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Multifirma (multisig)</div>
+            <div class="servicio-desc">Distribución geográfica de claves. Ningún punto único puede comprometer tus fondos.</div>
+          </div>
+        </div>
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Passphrase y negación plausible</div>
+            <div class="servicio-desc">Billetera señuelo + billetera real. Protección ante coacción física.</div>
+          </div>
+        </div>
+        <div class="servicio-item">
+          <div class="servicio-check">✓</div>
+          <div class="servicio-text">
+            <div class="servicio-title">Custodia corporativa</div>
+            <div class="servicio-desc">Política interna documentada, multisig con múltiples firmantes y revisión anual.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="como-funciona">
+    <div class="container">
+      <div class="section-label">El proceso</div>
+      <h2 class="section-title">Simple. Sin vueltas.</h2>
+      <p class="section-sub">Cuatro pasos desde el primer contacto hasta tu Bitcoin protegido.</p>
+
+      <div class="pasos">
+        <div class="paso">
+          <div class="paso-num">1</div>
+          <div class="paso-content">
+            <div class="paso-title">Completás el formulario de perfil</div>
+            <div class="paso-desc">
+              3 minutos. Nos contás tu situación actual y calculamos tu nivel de custodia.
+              Sin revelar datos sensibles.
+            </div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">2</div>
+          <div class="paso-content">
+            <div class="paso-title">Llamada de diagnóstico de 15'</div>
+            <div class="paso-desc">
+              Hablamos por Meet. Identificamos el punto de fallo más crítico de tu setup.
+              Sin presión, sin venta.
+            </div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">3</div>
+          <div class="paso-content">
+            <div class="paso-title">Propuesta a medida</div>
+            <div class="paso-desc">
+              Te enviamos el tier que corresponde a tu perfil técnico.
+              Elegís y confirmás.
+            </div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num">4</div>
+          <div class="paso-content">
+            <div class="paso-title">Sesiones de implementación</div>
+            <div class="paso-desc">
+              Trabajamos juntos hasta que tu custodia esté verificada y funcionando.
+              Vos hacés los cambios, nosotros te guiamos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section id="precios" class="servicios-bg">
+    <div class="container">
+      <div class="section-label">Servicios y precios</div>
+      <h2 class="section-title">El nivel correcto<br>para tu situación.</h2>
+      <p class="section-sub">
+        El tier exacto se asigna después de la llamada de diagnóstico,
+        según tu perfil técnico y patrimonio.
+      </p>
+      <div class="tiers-grid">
+        <div class="tier-card">
+          <div class="tier-name">Simple</div>
+          <div class="tier-price">$50–$150 <span>USD</span></div>
+          <div class="tier-desc">Para quien está empezando o necesita un setup básico bien hecho.</div>
+          <ul class="tier-features">
+            <li>Diagnóstico de situación actual</li>
+            <li>Setup de hardware wallet desde cero</li>
+            <li>Backup verificado y documentado</li>
+            <li>2–3 sesiones de acompañamiento</li>
+            <li>Soporte 30 días</li>
+          </ul>
+        </div>
+        <div class="tier-card featured">
+          <div class="tier-badge">Más elegido</div>
+          <div class="tier-name">Media</div>
+          <div class="tier-price">$150–$500 <span>USD</span></div>
+          <div class="tier-desc">Para holders con patrimonio que quieren una custodia completa con herencia.</div>
+          <ul class="tier-features">
+            <li>Todo lo del tier Simple</li>
+            <li>Auditoría del setup existente</li>
+            <li>Passphrase y billetera señuelo</li>
+            <li>Plan de herencia documentado</li>
+            <li>Simulacro con familiar/heredero</li>
+            <li>4–6 sesiones · Soporte 60 días</li>
+          </ul>
+        </div>
+        <div class="tier-card">
+          <div class="tier-name">Premium</div>
+          <div class="tier-price">$500–$2000 <span>USD</span></div>
+          <div class="tier-desc">Para patrimonio significativo o empresas que necesitan máxima seguridad.</div>
+          <ul class="tier-features">
+            <li>Todo lo del tier Media</li>
+            <li>Multifirma con distribución geográfica</li>
+            <li>Negación plausible avanzada</li>
+            <li>Custodia corporativa documentada</li>
+            <li>Revisión anual incluida</li>
+            <li>Acompañamiento de Matías Mathey</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>¿Cuánto tiempo lleva tu setup<br>sin ser verificado?</h2>
+        <p>
+          El 95% de los holders de Bitcoin tienen al menos un punto crítico de fallo
+          en su custodia. El formulario tarda 3 minutos y te dice exactamente dónde estás.
+        </p>
+        <div class="cta-btns">
+          <a
+            href="https://tusllavestusbtc.github.io/formulario-perfil/?utm_source=landing&utm_medium=cta_final&utm_campaign=perfil"
+            class="btn-primary"
+            onclick="fbq('track','Lead',{content_name:'cta_final_form'})"
+          >
+            🔒 Descubrí tu nivel — es gratis
+          </a>
+          <a
+            href="https://wa.me/5491138211242?text=Hola%2C+quiero+saber+m%C3%A1s+sobre+TLT%E2%82%BF"
+            class="btn-secondary"
+            target="_blank"
+          >
+            WhatsApp directo →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REDES -->
+  <section class="redes-section">
+    <div class="container">
+      <div class="redes-title">Seguinos en redes</div>
+      <div class="redes-links">
+        <a href="https://www.youtube.com/@TusLlavesTusBTC" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.1c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.1.3 4.3.3 4.3s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.3 21.8 12 21.8 12 21.8s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.3v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8.4l8.1 3.6-8.1 3.5z"/></svg>
+          YouTube
+        </a>
+        <a href="https://www.instagram.com/tusllavestusbtc" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 3.3.1 4.8 1.7 4.9 4.9.1 1.3.1 1.6.1 4.8 0 3.2 0 3.6-.1 4.8-.1 3.2-1.7 4.8-4.9 4.9-1.3.1-1.6.1-4.9.1-3.2 0-3.6 0-4.8-.1-3.3-.1-4.8-1.7-4.9-4.9C2.2 15.6 2.2 15.2 2.2 12c0-3.2 0-3.6.1-4.8C2.4 3.9 4 2.3 7.2 2.3 8.4 2.2 8.8 2.2 12 2.2zm0-2.2C8.7 0 8.3 0 7.1.1 2.7.3.3 2.7.1 7.1 0 8.3 0 8.7 0 12s0 3.7.1 4.9C.3 21.3 2.7 23.7 7.1 23.9 8.3 24 8.7 24 12 24s3.7 0 4.9-.1c4.4-.2 6.8-2.6 7-7 .1-1.2.1-1.6.1-4.9s0-3.7-.1-4.9C23.7 2.7 21.3.3 16.9.1 15.7 0 15.3 0 12 0zm0 5.8a6.2 6.2 0 100 12.4A6.2 6.2 0 0012 5.8zm0 10.2a4 4 0 110-8 4 4 0 010 8zm6.4-11.8a1.4 1.4 0 100 2.8 1.4 1.4 0 000-2.8z"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.tiktok.com/@tusllavestusbtc" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 3.3A4.9 4.9 0 0117.2 0h-3.6v16.4a2.9 2.9 0 01-2.9 2.5 2.9 2.9 0 01-2.9-2.9 2.9 2.9 0 012.9-2.9c.3 0 .5 0 .8.1V9.5a6.5 6.5 0 00-.8-.1 6.5 6.5 0 00-6.5 6.5 6.5 6.5 0 006.5 6.5 6.5 6.5 0 006.5-6.5V8.1a8.4 8.4 0 004.9 1.6V6.1a4.9 4.9 0 01-2.5-.8z"/></svg>
+          TikTok
+        </a>
+        <a href="https://x.com/tusllavestusbtc" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.3 1.2h3.5l-7.7 8.8L23 22.8h-7L10.9 15 4.9 22.8H1.4l8.2-9.4L1 1.2h7.2l5.5 7.3 6.6-7.3zm-1.2 19.4h1.9L6.8 3.2H4.8l12.3 17.4z"/></svg>
+          X / Twitter
+        </a>
+        <a href="https://www.linkedin.com/company/tusllavestusbtc" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.4h-3.5v-5.6c0-1.3 0-3-1.8-3-1.9 0-2.1 1.5-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.9 3.3-1.9 3.5 0 4.2 2.3 4.2 5.4v6.3zM5.3 7.4a2 2 0 110-4.1 2 2 0 010 4.1zm1.8 13H3.5V9h3.6v11.4zM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6C0 23.2.8 24 1.8 24h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://web.facebook.com/tusllavestusbtc" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.1C24 5.4 18.6 0 12 0S0 5.4 0 12.1C0 18 4.3 23 10.1 24v-8.4H7V12h3.1v-2.7c0-3.1 1.8-4.7 4.6-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 1-2 1.9V12h3.3l-.5 3.6h-2.8V24C19.7 23 24 18 24 12.1z"/></svg>
+          Facebook
+        </a>
+        <a href="https://wa.me/5491138211242" target="_blank" class="red-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.5 0-.2-.7-1.6-1-2.2-.3-.6-.6-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4 0 1.4 1 2.8 1.1 3 .2.2 2 3 4.8 4.2.7.3 1.2.4 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.3-.6-.4zm-5.5 7.6C5.4 22 1 17.5 1 12 1 6 5.9 1 12 1s11 5 11 11c0 2.5-.8 4.8-2.2 6.6l1.4 4.2-4.4-1.4C16.1 22 14.1 22 12 22zm0-22C5.4 0 0 5.4 0 12c0 2.1.6 4.1 1.6 5.8L0 24l6.4-1.7C8.1 23.4 10 24 12 24c6.6 0 12-5.4 12-12S18.6 0 12 0z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="logo-TLTBTC.png" alt="TLT₿">
+    </div>
+    <div class="footer-text">
+      © 2026 Tus Llaves, Tus Bitcoin. — LATAM<br>
+      Nunca accedemos a tus claves privadas.
+    </div>
+    <div class="footer-lema">Not your keys, not your coins. ₿</div>
+  </footer>
+
+  <script>
+    function toggleNav() {
+      document.getElementById('nav-links').classList.toggle('open');
+    }
+    // Cerrar menú al hacer clic en un link
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.getElementById('nav-links').classList.remove('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
