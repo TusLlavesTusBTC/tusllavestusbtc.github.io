@@ -60,14 +60,16 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 6px 24px;
+      padding: 4px 24px;
+      overflow: visible;
       background: rgba(23,22,22,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(254,81,0,0.15);
     }
     .nav-logo img {
-      height: 64px;
+      height: 90px;
       object-fit: contain;
+      position: relative;
     }
     .nav-links {
       display: flex; align-items: center; gap: 28px;
@@ -98,7 +100,7 @@
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       text-align: center;
-      padding: 80px 24px 40px;
+      padding: 80px 24px 20vh;
       position: relative;
       overflow: hidden;
       gap: 0;
