@@ -489,7 +489,7 @@
     <img src="logo-TLTBTC.png" alt="Tus Llaves, Tus Bitcoin." class="hero-logo">
 
     <p class="hero-sub">
-      Llevamos la custodia de tus bitcoin a otro nivel.<br>
+      Llevamos la custodia de <span style="color:var(--color-primary)">tus bitcoin</span> a otro nivel.<br>
       No tienes que hacerlo solo, te asistimos en el proceso.<br>
       <span id="typewriter"></span><span class="tw-cursor">|</span>
     </p>
@@ -807,13 +807,23 @@
 
     // Typewriter
     (function(){
-      const txt = 'A medida, en tu idioma, sin que nadie toque tus claves.';
+      const linea1 = 'A tu medida, tus tiempos,';
+      const linea2 = '...sin que nadie toque tus claves.';
+      const full   = linea1 + '\n' + linea2;
       const el  = document.getElementById('typewriter');
       const cur = document.querySelector('.tw-cursor');
       let i = 0;
+      function render(s) {
+        if (s.length <= linea1.length) {
+          el.innerHTML = s;
+        } else {
+          const rest = s.slice(linea1.length + 1);
+          el.innerHTML = linea1 + '<br><span style="color:var(--color-primary)">' + rest + '</span>';
+        }
+      }
       function type() {
-        if (i <= txt.length) {
-          el.textContent = txt.slice(0, i++);
+        if (i <= full.length) {
+          render(full.slice(0, i++));
           setTimeout(type, 38);
         } else {
           cur.style.animation = 'none';
