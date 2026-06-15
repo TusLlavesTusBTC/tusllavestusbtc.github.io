@@ -147,6 +147,12 @@
     }
     .hero h1 span { color: var(--color-primary); }
 
+    .pq-cursor {
+      display: inline-block;
+      color: var(--color-accent);
+      animation: blink .7s step-end infinite;
+    }
+
     .tw-cursor {
       display: inline-block;
       color: var(--color-primary);
@@ -492,7 +498,7 @@
     <img src="logo-TLTBTC.png" alt="Tus Llaves, Tus Bitcoin." class="hero-logo">
 
     <p class="hero-sub">
-      Llevamos la custodia de tus <span style="color:var(--color-primary)">bitcoin</span> a otro nivel.<br>
+      Llevamos la custodia de tus bitcoin a otro nivel.<br>
       No tienes que hacerlo solo, <span style="color:var(--color-accent)">te asistimos</span> en el proceso.<br>
       <span id="typewriter"></span><span class="tw-cursor">|</span>
     </p>
@@ -527,8 +533,7 @@
       <div class="section-label">¿Para quién?</div>
       <h2 class="section-title">Tu Bitcoin merece<br>el nivel correcto de protección.</h2>
       <p class="section-sub">
-        No importa si estás empezando o si ya tenés años en el ecosistema.
-        Diseñamos la custodia para tu situación específica.
+        <span id="pq-typewriter"></span><span class="pq-cursor">|</span>
       </p>
       <div class="tipos-grid">
         <div class="tipo-card">
@@ -834,6 +839,32 @@
         }
       }
       setTimeout(type, 900);
+    })();
+
+    // Typewriter loop ¿Para quién?
+    (function(){
+      const frases = [
+        'Cada situación es distinta. Estudiamos tu caso para diseñar la custodia que realmente necesitas.',
+        'Sin importar tu nivel técnico, tus tiempos, tus recursos, tenemos un esquema para ti.',
+        'Desde tu primera hardware wallet, una multi-firma empresarial y/o herencia familiar, encontramos el nivel correcto.',
+        'No existe una única solución. Adaptamos cada setup al perfil, recursos y/o contexto de cada cliente.',
+      ];
+      const el  = document.getElementById('pq-typewriter');
+      const cur = document.querySelector('.pq-cursor');
+      let fi = 0, ci = 0, borrando = false;
+      function tick() {
+        const txt = frases[fi];
+        if (!borrando) {
+          el.textContent = txt.slice(0, ++ci);
+          if (ci === txt.length) { borrando = true; setTimeout(tick, 2200); return; }
+          setTimeout(tick, 32);
+        } else {
+          el.textContent = txt.slice(0, --ci);
+          if (ci === 0) { borrando = false; fi = (fi + 1) % frases.length; setTimeout(tick, 400); return; }
+          setTimeout(tick, 18);
+        }
+      }
+      setTimeout(tick, 600);
     })();
 
     // Botón rotativo con UTMs
