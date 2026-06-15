@@ -154,13 +154,7 @@
       animation: blink .7s step-end infinite;
     }
 
-    .tw-cursor {
-      display: inline-block;
-      color: var(--color-primary);
-      font-weight: 400;
-      animation: blink .7s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
     .hero-sub {
       font-size: clamp(0.8rem, 1.5vw, 1.075rem);
@@ -538,7 +532,8 @@
     <p class="hero-sub">
       Llevamos la custodia de tus bitcoin a otro nivel.<br>
       No tienes que hacerlo solo, <span style="color:var(--color-accent)">te asistimos</span> en el proceso.<br>
-      <span id="typewriter"></span><span class="tw-cursor">|</span>
+      Adaptado a tu medida, tiempos, recursos,<br>
+      <span style="color:var(--color-primary)">...sin que nadie toque tus claves.</span>
     </p>
 
     <div class="hero-ctas">
@@ -549,7 +544,7 @@
         target="_blank"
         onclick="trackRotativo()"
       >
-        <span class="btn-linea1" id="btn-texto">Habla con el equipo</span>
+        <span class="btn-linea1">Habla con el equipo</span>
         <span class="btn-linea2">➜ es Gratis</span>
       </a>
       <a
@@ -559,7 +554,7 @@
         onclick="fbq('track','Lead',{content_name:'hero_diagnostico'})"
       >
         <span class="btn-linea1">¿Tienes dudas?</span>
-        <span class="btn-linea2" id="btn-sec-texto">➜ Descubre tu situación actual</span>
+        <span class="btn-linea2">➜ Descubre tu situación actual</span>
       </a>
     </div>
 
@@ -848,34 +843,6 @@
       });
     });
 
-    // Typewriter
-    (function(){
-      const linea1 = 'Adaptado a tu medida, tiempos, recursos,';
-      const linea2 = '...sin que nadie toque tus claves.';
-      const full   = linea1 + '\n' + linea2;
-      const el  = document.getElementById('typewriter');
-      const cur = document.querySelector('.tw-cursor');
-      let i = 0;
-      function render(s) {
-        if (s.length <= linea1.length) {
-          el.innerHTML = s;
-        } else {
-          const rest = s.slice(linea1.length + 1);
-          el.innerHTML = linea1 + '<br><span style="color:var(--color-primary)">' + rest + '</span>';
-        }
-      }
-      function type() {
-        if (i <= full.length) {
-          render(full.slice(0, i++));
-          setTimeout(type, 38);
-        } else {
-          cur.style.animation = 'none';
-          cur.style.opacity   = '0';
-        }
-      }
-      setTimeout(type, 900);
-    })();
-
     // Typewriter loop ¿Para quién?
     (function(){
       const O = 'var(--color-primary)', V = 'var(--color-accent)';
@@ -926,67 +893,40 @@
         el.innerHTML = html;
       }
 
+      const pqCursor = document.querySelector('.pq-cursor');
       function tick() {
         const f = frases[fi];
         const total = totalChars(f);
         if (!borrando) {
           renderAt(f, ++ci);
-          if (ci === total) { borrando = true; setTimeout(tick, 4500); return; }
+          if (ci === total) {
+            borrando = true;
+            if (pqCursor) pqCursor.style.opacity = '0';
+            setTimeout(tick, 4500);
+            return;
+          }
+          if (pqCursor) pqCursor.style.opacity = '1';
           setTimeout(tick, 32);
         } else {
           renderAt(f, --ci);
-          if (ci === 0) { borrando = false; fi = (fi + 1) % frases.length; setTimeout(tick, 400); return; }
+          if (ci === 0) {
+            borrando = false;
+            fi = (fi + 1) % frases.length;
+            setTimeout(tick, 400);
+            return;
+          }
           setTimeout(tick, 18);
         }
       }
       setTimeout(tick, 600);
     })();
 
-    // Botón rotativo con UTMs
-    const BASE = 'https://cal.com/TusLlavesTusBTC/15?utm_source=landing&utm_medium=hero&utm_campaign=llamada';
-    const OPCIONES = [
-      { texto: 'Habla con el equipo',    utm: 'equipo'      },
-      { texto: 'Reserva tu llamada de 15\'', utm: 'reserva' },
-      { texto: 'Consulta con un experto', utm: 'experto'    },
-      { texto: 'Da el primer paso',       utm: 'primer-paso' },
-    ];
-    let idx = 0;
-    const btnEl  = document.getElementById('btn-rotativo');
-    const textoEl = document.getElementById('btn-texto');
-
-    // Botón secundario alternante
-    const SEC_OPCIONES = [
-      '➜ Descubre tu situación actual',
-      '➜ Conoce tu punto de partida',
-    ];
-    let secIdx = 0;
-    const secTextoEl = document.getElementById('btn-sec-texto');
-    setInterval(() => {
-      secTextoEl.style.opacity = '0';
-      setTimeout(() => {
-        secIdx = (secIdx + 1) % SEC_OPCIONES.length;
-        secTextoEl.textContent = SEC_OPCIONES[secIdx];
-        secTextoEl.style.opacity = '1';
-      }, 400);
-    }, 4000);
-
-    function actualizarBtn() {
-      textoEl.style.opacity = '0';
-      setTimeout(() => {
-        idx = (idx + 1) % OPCIONES.length;
-        textoEl.textContent = OPCIONES[idx].texto;
-        btnEl.href = BASE + '&utm_content=' + OPCIONES[idx].utm;
-        textoEl.style.opacity = '1';
-      }, 400);
-    }
-
+    // Botón primario — link fijo
+    const btnEl = document.getElementById('btn-rotativo');
+    btnEl.href = 'https://cal.com/TusLlavesTusBTC/15?utm_source=landing&utm_medium=hero&utm_campaign=llamada&utm_content=equipo';
     function trackRotativo() {
-      fbq('track', 'Schedule', { content_name: 'hero_rotativo_' + OPCIONES[idx].utm });
+      fbq('track', 'Schedule', { content_name: 'hero_cta_equipo' });
     }
-
-    // Setear link inicial
-    btnEl.href = BASE + '&utm_content=' + OPCIONES[0].utm;
-    setInterval(actualizarBtn, 3000);
 
     // Rotación de texto por card
     const CARDS = [
@@ -1027,7 +967,7 @@
           el.textContent = card.casos[i];
           el.style.opacity = '1';
         }, 400);
-      }, 5000 + Math.random() * 1000);
+      }, 8000);
     });
   </script>
 
