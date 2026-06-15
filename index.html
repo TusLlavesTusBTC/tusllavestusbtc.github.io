@@ -245,16 +245,16 @@
     /* ── PARA QUIÉN ── */
     .tipos-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 16px;
-      max-width: 720px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .tipo-card {
       background: var(--color-bg2);
       border: 1.5px solid var(--color-bg3);
       border-radius: 16px;
-      padding: 28px 32px;
+      padding: 22px 24px;
       transition: border-color 0.2s;
     }
     .tipo-card:hover { border-color: var(--color-primary); }
@@ -862,7 +862,7 @@
           {t: '...tenemos un esquema para ti.', c: V},
         ],
         [
-          {t: 'Hardware wallet personal, multi-firma empresarial, herencia familiar,'},
+          {t: 'Hardware wallet, multi-firma o herencia familiar:'},
           {br: true},
           {t: '...cada sistema tiene su plan correcto.', c: O},
         ],
