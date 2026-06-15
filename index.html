@@ -251,8 +251,10 @@
     }
     .tipo-card:hover { border-color: var(--color-primary); transform: translateY(-3px); }
     .tipo-icon {
-      font-size: 2rem; margin-bottom: 16px;
-      display: block;
+      display: block; margin-bottom: 16px;
+    }
+    .tipo-icon img {
+      width: 48px; height: 48px; object-fit: contain;
     }
     .tipo-title {
       font-size: 1.05rem; font-weight: 700;
@@ -529,7 +531,7 @@
       </p>
       <div class="tipos-grid">
         <div class="tipo-card">
-          <span class="tipo-icon">🧑</span>
+          <span class="tipo-icon"><img src="assets/estrella-blanca.png" alt="Personal"></span>
           <div class="tipo-title">Personal</div>
           <p class="tipo-desc">
             Holder individual que quiere pasar del exchange a la autocustodia,
@@ -537,7 +539,7 @@
           </p>
         </div>
         <div class="tipo-card">
-          <span class="tipo-icon">👨‍👩‍👧</span>
+          <span class="tipo-icon"><img src="assets/estrella-mint.png" alt="Familiar"></span>
           <div class="tipo-title">Familiar</div>
           <p class="tipo-desc">
             Patrimonio familiar en Bitcoin. Plan de herencia, acceso de emergencia
@@ -545,7 +547,7 @@
           </p>
         </div>
         <div class="tipo-card">
-          <span class="tipo-icon">🏢</span>
+          <span class="tipo-icon"><img src="assets/estrella-naranja.png" alt="Empresa"></span>
           <div class="tipo-title">Empresa</div>
           <p class="tipo-desc">
             Tesorería corporativa en Bitcoin. Política interna de custodia,
