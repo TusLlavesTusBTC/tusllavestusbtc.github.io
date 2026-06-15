@@ -843,23 +843,39 @@
 
     // Typewriter loop ¿Para quién?
     (function(){
+      const O = 'var(--color-primary)', V = 'var(--color-accent)';
       const frases = [
-        'Cada situación es distinta. Estudiamos tu caso para diseñar la custodia que realmente necesitas.',
-        'Sin importar tu nivel técnico, tus tiempos, tus recursos, tenemos un esquema para ti.',
-        'Desde tu primera hardware wallet, una multi-firma empresarial y/o herencia familiar, encontramos el nivel correcto.',
-        'No existe una única solución. Adaptamos cada setup al perfil, recursos y/o contexto de cada cliente.',
+        { plain: 'Cada situación es distinta. Estudiamos tu caso para diseñar la custodia que ', color: O, tail: 'realmente necesitas.' },
+        { plain: 'Sin importar tu nivel técnico, tus tiempos, tus recursos, ', color: V, tail: 'tenemos un esquema para ti.' },
+        { plain: 'Desde tu primera hardware wallet, una multi-firma empresarial y/o herencia familiar, ', color: O, tail: 'encontramos el nivel correcto.' },
+        { plain: 'No existe una única solución. ', color: V, tail: 'Adaptamos', tail2: ' cada setup al perfil, recursos y/o contexto de cada cliente.' },
       ];
-      const el  = document.getElementById('pq-typewriter');
-      const cur = document.querySelector('.pq-cursor');
+      const el = document.getElementById('pq-typewriter');
       let fi = 0, ci = 0, borrando = false;
+
+      function renderAt(f, i) {
+        const p = f.plain, t = f.tail, t2 = f.tail2 || '';
+        const full = p + t + t2;
+        const s = full.slice(0, i);
+        if (s.length <= p.length) {
+          el.innerHTML = s;
+        } else if (s.length <= p.length + t.length) {
+          el.innerHTML = p + '<span style="color:' + f.color + '">' + s.slice(p.length) + '</span>';
+        } else {
+          el.innerHTML = p + '<span style="color:' + f.color + '">' + t + '</span>' + s.slice(p.length + t.length);
+        }
+        return full.length;
+      }
+
       function tick() {
-        const txt = frases[fi];
+        const f = frases[fi];
+        const total = f.plain.length + f.tail.length + (f.tail2 || '').length;
         if (!borrando) {
-          el.textContent = txt.slice(0, ++ci);
-          if (ci === txt.length) { borrando = true; setTimeout(tick, 2200); return; }
+          renderAt(f, ++ci);
+          if (ci === total) { borrando = true; setTimeout(tick, 4500); return; }
           setTimeout(tick, 32);
         } else {
-          el.textContent = txt.slice(0, --ci);
+          renderAt(f, --ci);
           if (ci === 0) { borrando = false; fi = (fi + 1) % frases.length; setTimeout(tick, 400); return; }
           setTimeout(tick, 18);
         }
