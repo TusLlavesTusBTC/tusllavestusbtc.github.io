@@ -245,17 +245,24 @@
     /* ── PARA QUIÉN ── */
     .tipos-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 16px;
+      max-width: 720px;
+      margin: 0 auto;
     }
     .tipo-card {
       background: var(--color-bg2);
       border: 1.5px solid var(--color-bg3);
       border-radius: 16px;
-      padding: 32px 24px;
-      transition: border-color 0.2s, transform 0.2s;
+      padding: 28px 32px;
+      transition: border-color 0.2s;
     }
-    .tipo-card:hover { border-color: var(--color-primary); transform: translateY(-3px); }
+    .tipo-card:hover { border-color: var(--color-primary); }
+    .tipo-desc {
+      font-size: 0.82rem; color: var(--color-text-secondary);
+      line-height: 1.7; min-height: 3.4em;
+      transition: opacity 0.4s ease;
+    }
     .tipo-header {
       display: flex; align-items: center; gap: 12px;
       margin-bottom: 16px;
@@ -272,10 +279,6 @@
     .tipo-title--blanco { color: #efeeea; }
     .tipo-title--mint   { color: var(--color-accent); }
     .tipo-title--naranja{ color: var(--color-primary); }
-    .tipo-desc {
-      font-size: 0.82rem; color: var(--color-text-secondary);
-      line-height: 1.6;
-    }
 
     /* ── QUÉ HACEMOS ── */
     .servicios-bg { background: var(--color-bg2); }
@@ -546,30 +549,21 @@
             <span class="tipo-icon"><img src="assets/estrella-blanca.png" alt="Personal"></span>
             <div class="tipo-title tipo-title--blanco">Personal</div>
           </div>
-          <p class="tipo-desc">
-            Holder individual que quiere pasar del exchange a la autocustodia,
-            o mejorar un setup existente sin puntos únicos de fallo.
-          </p>
+          <p class="tipo-desc" id="desc-personal">Tienes Bitcoin en un exchange y quieres sacarlo. Te guiamos paso a paso, sin errores.</p>
         </div>
         <div class="tipo-card">
           <div class="tipo-header">
             <span class="tipo-icon"><img src="assets/estrella-mint.png" alt="Familiar"></span>
             <div class="tipo-title tipo-title--mint">Familiar</div>
           </div>
-          <p class="tipo-desc">
-            Patrimonio familiar en Bitcoin. Plan de herencia, acceso de emergencia
-            para tu pareja o hijos, sin depender de terceros.
-          </p>
+          <p class="tipo-desc" id="desc-familiar">Tienen Bitcoin y necesitan que la familia pueda acceder si algo pasa. Sin depender de exchanges ni terceros.</p>
         </div>
         <div class="tipo-card">
           <div class="tipo-header">
             <span class="tipo-icon"><img src="assets/estrella-naranja.png" alt="Empresa"></span>
             <div class="tipo-title tipo-title--naranja">Empresa</div>
           </div>
-          <p class="tipo-desc">
-            Tesorería corporativa en Bitcoin. Política interna de custodia,
-            multifirma con múltiples firmantes, auditoría anual.
-          </p>
+          <p class="tipo-desc" id="desc-empresa">La empresa tiene Bitcoin en tesorería y necesita un esquema de custodia con control compartido.</p>
         </div>
       </div>
     </div>
@@ -963,6 +957,48 @@
     // Setear link inicial
     btnEl.href = BASE + '&utm_content=' + OPCIONES[0].utm;
     setInterval(actualizarBtn, 3000);
+
+    // Rotación de texto por card
+    const CARDS = [
+      {
+        id: 'desc-personal',
+        casos: [
+          'Tienes Bitcoin en un exchange y quieres sacarlo. Te guiamos paso a paso, sin errores.',
+          'Ya tienes hardware wallet pero no estás seguro si tu setup es sólido. Lo revisamos juntos.',
+          'Recibiste Bitcoin por herencia o como pago y no sabes cómo custodiarlos de forma segura.',
+        ]
+      },
+      {
+        id: 'desc-familiar',
+        casos: [
+          'Tienen Bitcoin y necesitan que la familia pueda acceder si algo pasa. Sin depender de exchanges ni terceros.',
+          'Quieren un plan de herencia claro: quién puede acceder, cuándo y cómo. Sin tecnicismos.',
+          'Buscan custodiar el patrimonio familiar en frío, con acceso de emergencia definido para cada miembro.',
+        ]
+      },
+      {
+        id: 'desc-empresa',
+        casos: [
+          'La empresa tiene Bitcoin en tesorería y necesita un esquema de custodia con control compartido.',
+          'Requieren multifirma con múltiples firmantes y una política interna de acceso documentada.',
+          'Necesitan un setup auditable, con gobernanza clara y sin dependencia de una sola persona.',
+        ]
+      },
+    ];
+
+    CARDS.forEach(card => {
+      const el = document.getElementById(card.id);
+      if (!el) return;
+      let i = 0;
+      setInterval(() => {
+        el.style.opacity = '0';
+        setTimeout(() => {
+          i = (i + 1) % card.casos.length;
+          el.textContent = card.casos[i];
+          el.style.opacity = '1';
+        }, 400);
+      }, 5000 + Math.random() * 1000);
+    });
   </script>
 
 </body>
