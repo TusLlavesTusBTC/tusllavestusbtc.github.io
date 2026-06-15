@@ -256,17 +256,22 @@
       transition: border-color 0.2s, transform 0.2s;
     }
     .tipo-card:hover { border-color: var(--color-primary); transform: translateY(-3px); }
-    .tipo-icon {
-      display: block; margin-bottom: 16px;
+    .tipo-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
     }
+    .tipo-icon { display: flex; align-items: center; }
     .tipo-icon img {
-      width: 48px; height: 48px; object-fit: contain;
+      width: 36px; height: 36px; object-fit: contain;
       mix-blend-mode: screen;
     }
     .tipo-title {
       font-size: 1.56rem; font-weight: 700;
-      margin-bottom: 10px;
+      margin: 0;
     }
+    .tipo-title--blanco { color: #efeeea; }
+    .tipo-title--mint   { color: var(--color-accent); }
+    .tipo-title--naranja{ color: var(--color-primary); }
     .tipo-desc {
       font-size: 0.82rem; color: var(--color-text-secondary);
       line-height: 1.6;
@@ -537,24 +542,30 @@
       </p>
       <div class="tipos-grid">
         <div class="tipo-card">
-          <span class="tipo-icon"><img src="assets/estrella-blanca.png" alt="Personal"></span>
-          <div class="tipo-title">Personal</div>
+          <div class="tipo-header">
+            <span class="tipo-icon"><img src="assets/estrella-blanca.png" alt="Personal"></span>
+            <div class="tipo-title tipo-title--blanco">Personal</div>
+          </div>
           <p class="tipo-desc">
             Holder individual que quiere pasar del exchange a la autocustodia,
             o mejorar un setup existente sin puntos únicos de fallo.
           </p>
         </div>
         <div class="tipo-card">
-          <span class="tipo-icon"><img src="assets/estrella-mint.png" alt="Familiar"></span>
-          <div class="tipo-title">Familiar</div>
+          <div class="tipo-header">
+            <span class="tipo-icon"><img src="assets/estrella-mint.png" alt="Familiar"></span>
+            <div class="tipo-title tipo-title--mint">Familiar</div>
+          </div>
           <p class="tipo-desc">
             Patrimonio familiar en Bitcoin. Plan de herencia, acceso de emergencia
             para tu pareja o hijos, sin depender de terceros.
           </p>
         </div>
         <div class="tipo-card">
-          <span class="tipo-icon"><img src="assets/estrella-naranja.png" alt="Empresa"></span>
-          <div class="tipo-title">Empresa</div>
+          <div class="tipo-header">
+            <span class="tipo-icon"><img src="assets/estrella-naranja.png" alt="Empresa"></span>
+            <div class="tipo-title tipo-title--naranja">Empresa</div>
+          </div>
           <p class="tipo-desc">
             Tesorería corporativa en Bitcoin. Política interna de custodia,
             multifirma con múltiples firmantes, auditoría anual.
