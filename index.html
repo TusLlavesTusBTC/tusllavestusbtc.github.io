@@ -186,6 +186,11 @@
     .btn-primary:hover { background: #d94400; transform: translateY(-1px); }
     .btn-rotativo { transition: background 0.2s, transform 0.15s; }
     .btn-rotativo .btn-linea1 { transition: opacity 0.4s ease; }
+    .btn-rotativo .btn-linea2 { animation: pulseGratis 2.4s ease-in-out infinite; }
+    @keyframes pulseGratis {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.45; }
+    }
     .btn-secondary {
       display: inline-flex; flex-direction: column; align-items: center;
       background: transparent;
