@@ -1027,5 +1027,37 @@
       btnTop.classList.toggle('visible', window.scrollY > 300);
     });
   </script>
+
+  <script>
+    // Tracking automático de clicks en links externos
+    const RED_MAP = {
+      'x.com':        'X (Twitter)',
+      'twitter.com':  'X (Twitter)',
+      'instagram.com':'Instagram',
+      'linkedin.com': 'LinkedIn',
+      'facebook.com': 'Facebook',
+      'youtube.com':  'YouTube',
+      'tiktok.com':   'TikTok',
+      'wa.me':        'WhatsApp',
+      'github.com':   'GitHub',
+    };
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const href = a.href || '';
+      if (!href.startsWith('http')) return;
+      const domain = Object.keys(RED_MAP).find(d => href.includes(d));
+      if (!domain) return;
+      const red = RED_MAP[domain];
+      const seccion = a.closest('[id]')?.id || 'landing';
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'click_red_social', {
+          event_category: 'redes',
+          event_label: red,
+          seccion: seccion,
+        });
+      }
+    });
+  </script>
 </body>
 </html>
