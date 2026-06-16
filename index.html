@@ -501,6 +501,8 @@
       .footer-logo { display: none; }
       .section-sub { white-space: normal !important; }
       section { overflow-x: hidden; }
+      #equipo-grid { grid-template-columns: 1fr; gap: 40px 0; }
+      #equipo-grid > div:nth-child(3) { display: none; }
     }
     @media (max-width: 480px) {
       .hero-ctas { flex-direction: column; align-items: stretch; }
@@ -772,7 +774,7 @@
       <div class="section-label" style="margin-bottom:6px">Quiénes somos</div>
       <h2 class="section-title"><span style="font-weight:400">Dos fundadores, un solo objetivo:</span><br><span style="font-weight:600">➜ llevar tu custodia a otro nivel.</span></h2>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr 1px 1fr; gap:0 32px; max-width:780px; margin:48px auto 0; align-items:start;">
+      <div id="equipo-grid" style="display:grid; grid-template-columns:1fr 1fr 1px 1fr; gap:0 32px; max-width:780px; margin:48px auto 0; align-items:start;">
         <!-- Adrián -->
         <div style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:14px;">
           <img src="assets/foto-adrian.jpg" alt="Adrián" style="width:120px; height:120px; border-radius:50%; object-fit:cover; object-position:center top; border:2px solid var(--color-primary);">
@@ -816,8 +818,8 @@
       <div class="cta-box">
         <h2>¿Cuánto tiempo lleva tu setup<br>sin ser verificado?</h2>
         <p>
-          El 95% de los holders de Bitcoin tienen al menos un punto crítico de fallo
-          en su custodia. El formulario tarda 3 minutos y te dice exactamente dónde estás.
+          El 95% de los holders de Bitcoin tienen al menos un punto de fallo en su custodia.
+          El formulario tarda 3 minutos. ¿Ya sabés en qué nivel estás?
         </p>
         <div class="cta-btns">
           <a
