@@ -563,7 +563,7 @@
         class="btn-secondary"
         id="btn-secundario"
         target="_blank"
-        onclick="fbq('track','Lead',{content_name:'hero_conocimiento'})"
+        onclick="fbq('track','Lead',{content_name:'hero_conocimiento'}); gtag('event','click_btn_diagnostico',{event_category:'cta',event_label:'hero'})"
       >
         <span class="btn-linea1">¿Tienes dudas?</span>
         <span class="btn-linea2">➜ Descubre tu nivel</span>
@@ -971,6 +971,7 @@
     btnEl.href = 'https://tusllavestusbtc.github.io/formulario-perfil/?utm_source=landing&utm_medium=hero&utm_campaign=perfil';
     function trackRotativo() {
       fbq('track', 'Schedule', { content_name: 'hero_cta_equipo' });
+      gtag('event', 'click_btn_perfil', { event_category: 'cta', event_label: 'hero' });
     }
 
     // Rotación de texto por card
