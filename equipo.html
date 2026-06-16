@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TLT₿ — Equipo</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    body {
+      margin: 0; min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      background: #171616; font-family: 'Montserrat', sans-serif;
+      color: #efeeea;
+    }
+    .box {
+      text-align: center; padding: 48px 40px;
+      border: 1px solid #252424; border-radius: 16px;
+      background: #1e1d1d; max-width: 360px;
+    }
+    .logo { font-size: 2rem; font-weight: 800; margin-bottom: 24px; }
+    .logo span { color: #fe5100; }
+    .status { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .sub { font-size: 0.8rem; color: #7a7977; line-height: 1.6; }
+    .badge {
+      display: inline-block; margin-top: 24px;
+      padding: 8px 20px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .active   { background: rgba(0,201,147,0.15); color: #00c993; }
+    .inactive { background: rgba(254,81,0,0.15);  color: #fe5100; }
+    .btn {
+      display: block; margin-top: 16px; padding: 10px 24px;
+      background: #252424; border: none; border-radius: 8px;
+      color: #efeeea; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; width: 100%;
+    }
+    .btn:hover { background: #2e2d2d; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <div class="logo">TLT<span>₿</span></div>
+  <div class="status" id="status">Verificando...</div>
+  <div class="sub" id="sub"></div>
+  <div class="badge" id="badge"></div>
+  <button class="btn" id="btn" style="display:none" onclick="toggle()"></button>
+</div>
+
+<script>
+  const KEY = 'tltbtc_team';
+  const GA  = 'G-VXXKGQ766Q';
+
+  function render() {
+    const active = localStorage.getItem(KEY) === '1';
+    document.getElementById('status').textContent = active
+      ? 'Modo equipo activado'
+      : 'Modo equipo desactivado';
+    document.getElementById('sub').textContent = active
+      ? 'Este dispositivo no cuenta en las métricas de la landing.'
+      : 'Este dispositivo está siendo contado como visita real.';
+    document.getElementById('badge').textContent  = active ? '✓ Excluido de Analytics' : '● Contando como usuario real';
+    document.getElementById('badge').className    = 'badge ' + (active ? 'active' : 'inactive');
+    document.getElementById('btn').textContent    = active ? 'Desactivar (volver a contar)' : 'Activar — excluir este dispositivo';
+    document.getElementById('btn').style.display  = 'block';
+  }
+
+  function toggle() {
+    if (localStorage.getItem(KEY) === '1') {
+      localStorage.removeItem(KEY);
+    } else {
+      localStorage.setItem(KEY, '1');
+    }
+    render();
+  }
+
+  render();
+</script>
+</body>
+</html>
