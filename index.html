@@ -171,8 +171,11 @@
       gap: 14px; justify-content: center;
       margin-bottom: 20px;
     }
+    .hero-ctas { display: flex; flex-wrap: nowrap; }
     .hero-ctas .btn-primary,
-    .hero-ctas .btn-secondary { width: 230px; padding-left: 16px; padding-right: 16px; }
+    .hero-ctas .btn-secondary { flex: 1; max-width: 260px; padding-left: 16px; padding-right: 16px; }
+    .hero-ctas .btn-linea1,
+    .hero-ctas .btn-linea2 { white-space: nowrap; }
     .btn-primary {
       display: inline-flex; flex-direction: column; align-items: center;
       background: var(--color-primary);
