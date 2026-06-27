@@ -68,14 +68,14 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 24px 5px;
+      padding: 5px 24px 5px;
       overflow: clip;
       background: rgba(23,22,22,0.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(254,81,0,0.15);
     }
     .nav-logo img {
-      height: 30px;
+      height: 38px;
       object-fit: contain;
       position: relative;
     }
@@ -92,10 +92,11 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--color-text); }
+    .nav-links a.active { color: var(--color-primary); }
     .nav-cta {
       background: var(--color-primary);
       color: var(--color-text) !important;
-      padding: 8px 18px;
+      padding: 8px 10px;
       border-radius: 6px;
     }
     .nav-cta:hover { background: #d94400; color: var(--color-text) !important; }
@@ -1137,6 +1138,31 @@
         });
       }
     });
+  </script>
+
+  <script>
+    // Scroll spy nav
+    (function() {
+      const secciones = ['para-quien','servicios','como-funciona','precios','equipo'];
+      const links = {};
+      secciones.forEach(id => {
+        const a = document.querySelector('.nav-links a[href="#' + id + '"]');
+        if (a) links[id] = a;
+      });
+      function actualizarNav() {
+        const scrollY = window.scrollY + 70;
+        let activo = null;
+        secciones.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.offsetTop <= scrollY) activo = id;
+        });
+        Object.keys(links).forEach(id => {
+          links[id].classList.toggle('active', id === activo);
+        });
+      }
+      window.addEventListener('scroll', actualizarNav, { passive: true });
+      actualizarNav();
+    })();
   </script>
 </body>
 </html>
