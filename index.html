@@ -414,14 +414,15 @@
     /* Tier CTA hover */
     .tier-card { overflow: hidden; }
     .tier-cta {
-      display: block;
-      width: 100%;
-      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 85%;
+      margin: 20px auto 0;
       padding: 10px 16px;
       background: var(--color-primary);
       color: #fff;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.82rem; font-weight: 700;
       text-align: center; text-decoration: none;
       border-radius: 8px; border: none; cursor: pointer;
       opacity: 0;
@@ -429,6 +430,8 @@
       transition: opacity 0.25s ease, transform 0.25s ease;
       pointer-events: none;
     }
+    .tier-cta .cta-l1 { font-size: 0.75rem; font-weight: 400; opacity: 0.8; line-height: 1.4; }
+    .tier-cta .cta-l2 { font-size: 0.88rem; font-weight: 700; line-height: 1.4; }
     .tier-card:hover .tier-cta {
       opacity: 1;
       transform: translateY(0);
@@ -789,7 +792,7 @@
             <li>Revisión de la situación actual</li>
             <li>Backup (respaldo) verificado</li>
           </ul>
-          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_simple" class="tier-cta" data-tier="Simple">Reserva tu llamada &rarr;</a>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_simple" class="tier-cta" data-tier="Simple"><span class="cta-l1">Reserva tu llamada de 15'</span><span class="cta-l2">&#10132; es Gratis</span></a>
         </div>
         <div class="tier-card featured">
           <div class="tier-badge">Más contratado</div>
@@ -805,7 +808,7 @@
             <li>Passphrase + billetera señuelo</li>
             <li>Plan de respaldo/recuperación verificado</li>
           </ul>
-          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_media" class="tier-cta" data-tier="Media">Reserva tu llamada &rarr;</a>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_media" class="tier-cta" data-tier="Media"><span class="cta-l1">Reserva tu llamada de 15'</span><span class="cta-l2">&#10132; es Gratis</span></a>
         </div>
         <div class="tier-card">
           <div class="tipo-header" style="margin-bottom:12px;">
@@ -822,7 +825,7 @@
             <li>Revisión anual incluida</li>
             <li>Soporte/revisión con consultor MatheyBTC</li>
           </ul>
-          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_premium" class="tier-cta" data-tier="Premium">Reserva tu llamada &rarr;</a>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_premium" class="tier-cta" data-tier="Premium"><span class="cta-l1">Reserva tu llamada de 15'</span><span class="cta-l2">&#10132; es Gratis</span></a>
         </div>
       </div>
     </div>
