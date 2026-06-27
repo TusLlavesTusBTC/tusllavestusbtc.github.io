@@ -100,6 +100,30 @@
     }
     .nav-cta:hover { background: #d94400; color: var(--color-text) !important; }
     .nav-burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+    #mobile-menu {
+      display: none;
+      position: fixed; top: 52px; left: 0; right: 0; z-index: 200;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-bg3);
+      flex-direction: column;
+      padding: 20px 24px; gap: 0;
+    }
+    #mobile-menu.open { display: flex; }
+    #mobile-menu a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 1rem; font-weight: 600;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--color-bg3);
+    }
+    #mobile-menu a:last-child { border-bottom: none; }
+    #mobile-menu a:hover { color: var(--color-text); }
+    #mobile-menu .nav-cta {
+      background: var(--color-primary);
+      color: var(--color-text) !important;
+      padding: 10px 18px; border-radius: 6px;
+      text-align: center; margin-top: 8px; border: none;
+    }
     .nav-burger span { display: block; width: 24px; height: 2px; background: var(--color-text); border-radius: 2px; }
 
     /* ── HERO ── */
@@ -490,13 +514,7 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .nav-links { display: none; }
-      .nav-links.open {
-        display: flex; flex-direction: column;
-        position: fixed; top: 72px; left: 0; right: 0;
-        background: var(--color-bg);
-        border-bottom: 1px solid var(--color-bg3);
-        padding: 20px 24px; gap: 16px; z-index: 101;
-      }
+
       .nav-burger { display: flex; }
 
       .tipos-grid { grid-template-columns: 1fr; }
@@ -539,6 +557,16 @@
       <span></span><span></span><span></span>
     </div>
   </nav>
+
+  <!-- MENU MOBILE -->
+  <div id="mobile-menu">
+    <a href="#para-quien" onclick="closeMobileMenu()">Para quien</a>
+    <a href="#servicios" onclick="closeMobileMenu()">Servicios</a>
+    <a href="#como-funciona" onclick="closeMobileMenu()">Como funciona</a>
+    <a href="#precios" onclick="closeMobileMenu()">Precios</a>
+    <a href="#equipo" onclick="closeMobileMenu()">Equipo</a>
+    <a href="https://tusllavestusbtc.github.io/descubre-perfil/?utm_source=landing&utm_medium=nav&utm_campaign=perfil" class="nav-cta" onclick="closeMobileMenu()">Primer Paso</a>
+  </div>
 
   <!-- HERO -->
   <section class="hero">
@@ -876,13 +904,11 @@
 
   <script>
     function toggleNav() {
-      document.getElementById('nav-links').classList.toggle('open');
+      document.getElementById('mobile-menu').classList.toggle('open');
     }
-    document.querySelectorAll('.nav-links a').forEach(a => {
-      a.addEventListener('click', () => {
-        document.getElementById('nav-links').classList.remove('open');
-      });
-    });
+    function closeMobileMenu() {
+      document.getElementById('mobile-menu').classList.remove('open');
+    }
 
     // Typewriter loop ¿Para quién?
     (function(){
