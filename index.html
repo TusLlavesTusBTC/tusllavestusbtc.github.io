@@ -411,6 +411,36 @@
       transition: transform 0.2s;
     }
     .tier-card:hover { transform: translateY(-3px); }
+    /* Tier CTA hover */
+    .tier-card { overflow: hidden; }
+    .tier-cta {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: var(--color-primary);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem; font-weight: 700;
+      text-align: center; text-decoration: none;
+      border-radius: 8px; border: none; cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    .tier-card:hover .tier-cta {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    @media (max-width: 768px) {
+      .tier-cta {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+      }
+    }
     .tier-card.featured {
       border-color: var(--color-primary);
       background: rgba(254,81,0,0.04);
@@ -759,6 +789,7 @@
             <li>Revisión de la situación actual</li>
             <li>Backup (respaldo) verificado</li>
           </ul>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_simple" class="tier-cta" data-tier="Simple">Reserva tu llamada &rarr;</a>
         </div>
         <div class="tier-card featured">
           <div class="tier-badge">Más contratado</div>
@@ -774,6 +805,7 @@
             <li>Passphrase + billetera señuelo</li>
             <li>Plan de respaldo/recuperación verificado</li>
           </ul>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_media" class="tier-cta" data-tier="Media">Reserva tu llamada &rarr;</a>
         </div>
         <div class="tier-card">
           <div class="tipo-header" style="margin-bottom:12px;">
@@ -790,6 +822,7 @@
             <li>Revisión anual incluida</li>
             <li>Soporte/revisión con consultor MatheyBTC</li>
           </ul>
+          <a href="https://tusllavestusbtc.com/descubre-perfil/?utm_source=landing&utm_medium=tier_hover&utm_campaign=tier_premium" class="tier-cta" data-tier="Premium">Reserva tu llamada &rarr;</a>
         </div>
       </div>
     </div>
@@ -1051,6 +1084,28 @@
   </script>
 
   <script>
+
+    // Tier hover + click tracking
+    document.querySelectorAll('.tier-card').forEach(card => {
+      const tier = card.querySelector('.tier-cta') ? card.querySelector('.tier-cta').dataset.tier : null;
+      if (!tier) return;
+      let hoverTimer = null;
+      card.addEventListener('mouseenter', () => {
+        if (typeof gtag !== 'undefined') gtag('event', 'hover_tier', { tier: tier });
+        hoverTimer = setTimeout(() => {
+          if (typeof gtag !== 'undefined') gtag('event', 'hover_tier_3s', { tier: tier });
+        }, 3000);
+      });
+      card.addEventListener('mouseleave', () => {
+        clearTimeout(hoverTimer);
+      });
+      const btn = card.querySelector('.tier-cta');
+      if (btn) btn.addEventListener('click', () => {
+        if (typeof gtag !== 'undefined') gtag('event', 'click_reserva_tier', { tier: tier });
+        if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'tier_' + tier.toLowerCase() });
+      });
+    });
+
     // Tracking automático de clicks en links externos
     const RED_MAP = {
       'x.com':        'X (Twitter)',
