@@ -959,9 +959,49 @@ const NIVEL_LABELS = {
   intermedio: 'Intermedio', avanzado: 'Avanzado', experto: 'Experto'
 };
 
-function getLeads() {
-  return JSON.parse(localStorage.getItem('tltbtc_leads') || '[]');
+const API_URL = 'https://tltbtc-crm-api.lingering-credit-1c8e.workers.dev';
+const API_TOKEN = 'TLTBTC2025';
+
+function apiHeaders() {
+  return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_TOKEN };
 }
+
+async function getLeads() {
+  try {
+    const r = await fetch(API_URL + '/leads', { headers: apiHeaders() });
+    return await r.json();
+  } catch(e) {
+    return JSON.parse(localStorage.getItem('tltbtc_leads') || '[]');
+  }
+}
+
+async function saveLead(lead) {
+  if (lead.id && typeof lead.id === 'number') {
+    await fetch(API_URL + '/leads/' + lead.id, {
+      method: 'PUT', headers: apiHeaders(),
+      body: JSON.stringify({ estado: lead.estado, notas: lead.notas })
+    });
+  } else {
+    const r = await fetch(API_URL + '/leads', {
+      method: 'POST', headers: apiHeaders(),
+      body: JSON.stringify(lead)
+    });
+    const data = await r.json();
+    lead.id = data.id;
+  }
+  const leads = JSON.parse(localStorage.getItem('tltbtc_leads') || '[]');
+  const idx = leads.findIndex(l => l.id === lead.id);
+  if (idx >= 0) leads[idx] = lead; else leads.push(lead);
+  localStorage.setItem('tltbtc_leads', JSON.stringify(leads));
+  return lead;
+}
+
+async function deleteLead(id) {
+  await fetch(API_URL + '/leads/' + id, { method: 'DELETE', headers: apiHeaders() });
+  const leads = JSON.parse(localStorage.getItem('tltbtc_leads') || '[]');
+  localStorage.setItem('tltbtc_leads', JSON.stringify(leads.filter(l => l.id !== id)));
+}
+
 function saveLeads(leads) {
   localStorage.setItem('tltbtc_leads', JSON.stringify(leads));
 }
