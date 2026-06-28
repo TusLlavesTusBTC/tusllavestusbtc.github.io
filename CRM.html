@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM — TusLlavesTusBTC</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-primary: #fe5100;
+    --color-bg: #171616;
+    --color-bg2: #1e1d1d;
+    --color-bg3: #252424;
+    --color-accent: #00c993;
+    --color-light: #efeeea;
+    --color-text: #FFFFFF;
+    --color-text-secondary: #a0a0a0;
+    --color-danger: #ff3b3b;
+    --color-warning: #f5a623;
+    --radius: 10px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100vh;
+  }
+
+  /* AUTH */
+  #auth-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--color-bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .auth-box {
+    background: var(--color-bg2);
+    border: 1px solid var(--color-bg3);
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 380px;
+    text-align: center;
+  }
+  .auth-box .logo {
+    font-size: 13px; font-weight: 800; letter-spacing: 2px;
+    color: var(--color-primary); text-transform: uppercase; margin-bottom: 8px;
+  }
+  .auth-box h2 {
+    font-size: 22px; font-weight: 800; margin-bottom: 32px; color: var(--color-text);
+  }
+  .auth-box input {
+    width: 100%; padding: 14px 16px;
+    background: var(--color-bg3); border: 1px solid #333;
+    border-radius: var(--radius); color: var(--color-text);
+    font-family: 'Montserrat', sans-serif; font-size: 15px;
+    margin-bottom: 16px; outline: none; letter-spacing: 2px;
+    text-align: center;
+  }
+  .auth-box input:focus { border-color: var(--color-primary); }
+  .auth-box .btn-auth {
+    width: 100%; padding: 14px;
+    background: var(--color-primary); color: #fff;
+    border: none; border-radius: var(--radius);
+    font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: opacity .2s;
+  }
+  .auth-box .btn-auth:hover { opacity: .85; }
+  .auth-error { color: var(--color-danger); font-size: 13px; margin-top: 12px; display: none; }
+
+  /* MAIN */
+  #main-app { display: none; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--color-bg2);
+    border-bottom: 1px solid var(--color-bg3);
+    padding: 0 32px;
+    display: flex; align-items: center; gap: 32px;
+    height: 60px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-brand {
+    font-size: 13px; font-weight: 800; letter-spacing: 2px;
+    color: var(--color-primary); text-transform: uppercase; white-space: nowrap;
+  }
+  .topbar-nav { display: flex; gap: 4px; }
+  .nav-btn {
+    padding: 8px 18px; border-radius: 8px;
+    background: transparent; border: none;
+    color: var(--color-text-secondary); font-family: 'Montserrat', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: all .15s; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .nav-btn:hover { color: var(--color-text); background: var(--color-bg3); }
+  .nav-btn.active { color: var(--color-primary); background: var(--color-bg3); }
+
+  /* CONTENT */
+  .content { padding: 28px 32px; max-width: 1600px; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .section-title {
+    font-size: 22px; font-weight: 800; margin-bottom: 24px;
+    border-left: 3px solid var(--color-primary); padding-left: 14px;
+  }
+
+  /* PIPELINE */
+  .pipeline-board {
+    display: flex; gap: 14px; overflow-x: auto;
+    padding-bottom: 16px; min-height: 520px;
+  }
+  .pipeline-board::-webkit-scrollbar { height: 6px; }
+  .pipeline-board::-webkit-scrollbar-thumb { background: var(--color-bg3); border-radius: 3px; }
+
+  .kanban-col {
+    background: var(--color-bg2);
+    border-radius: 12px;
+    min-width: 240px; max-width: 240px;
+    display: flex; flex-direction: column;
+    border: 1px solid var(--color-bg3);
+  }
+  .kanban-col.drag-over { border-color: var(--color-primary); background: #271a15; }
+
+  .col-header {
+    padding: 14px 14px 10px;
+    border-bottom: 1px solid var(--color-bg3);
+  }
+  .col-title {
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1.5px; color: var(--color-text-secondary);
+  }
+  .col-count {
+    display: inline-block; margin-left: 8px;
+    background: var(--color-bg3); color: var(--color-text);
+    font-size: 11px; font-weight: 700; padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .col-count.clientes { background: var(--color-accent); color: #000; }
+
+  .col-cards {
+    flex: 1; padding: 10px; overflow-y: auto;
+    min-height: 200px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .col-cards::-webkit-scrollbar { width: 4px; }
+  .col-cards::-webkit-scrollbar-thumb { background: var(--color-bg3); border-radius: 2px; }
+
+  .col-footer { padding: 10px; }
+  .btn-new-lead {
+    width: 100%; padding: 8px;
+    background: transparent; border: 1px dashed #444;
+    border-radius: 8px; color: var(--color-text-secondary);
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+  }
+  .btn-new-lead:hover { border-color: var(--color-primary); color: var(--color-primary); }
+
+  /* LEAD CARD */
+  .lead-card {
+    background: var(--color-bg3);
+    border-radius: 8px; padding: 12px;
+    cursor: grab; border: 1px solid transparent;
+    transition: all .15s; position: relative;
+  }
+  .lead-card:hover { border-color: #444; }
+  .lead-card.dragging { opacity: .5; }
+  .lead-card.alerta {
+    border: 1px solid var(--color-danger) !important;
+    animation: blink-border 1.5s infinite;
+  }
+  @keyframes blink-border {
+    0%,100% { border-color: var(--color-danger); }
+    50% { border-color: transparent; }
+  }
+
+  .lead-name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .lead-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .badge-nivel {
+    font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .badge-basico    { background: #ff3b3b22; color: #ff3b3b; border: 1px solid #ff3b3b44; }
+  .badge-intermedio { background: #f5a62322; color: #f5a623; border: 1px solid #f5a62344; }
+  .badge-avanzado  { background: #ffd70022; color: #ffd700; border: 1px solid #ffd70044; }
+  .badge-experto   { background: #00c99322; color: #00c993; border: 1px solid #00c99344; }
+  .badge-sin_datos { background: #ffffff11; color: #aaa; border: 1px solid #ffffff22; }
+
+  .lead-score {
+    font-size: 11px; color: var(--color-text-secondary);
+    font-weight: 700;
+  }
+  .lead-date { font-size: 10px; color: var(--color-text-secondary); margin-bottom: 8px; }
+  .lead-actions { display: flex; gap: 6px; }
+  .btn-move {
+    flex: 1; padding: 5px 4px; border-radius: 6px;
+    background: var(--color-bg2); border: 1px solid #333;
+    color: var(--color-text-secondary); font-family: 'Montserrat', sans-serif;
+    font-size: 10px; font-weight: 700; cursor: pointer; transition: all .15s;
+  }
+  .btn-move:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  .btn-delete-lead {
+    padding: 5px 8px; border-radius: 6px;
+    background: transparent; border: 1px solid #333;
+    color: #555; font-size: 10px; cursor: pointer; transition: all .15s;
+  }
+  .btn-delete-lead:hover { border-color: var(--color-danger); color: var(--color-danger); }
+  .lead-fuente {
+    font-size: 10px; color: var(--color-text-secondary);
+    margin-bottom: 4px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,.7);
+    display: flex; align-items: center; justify-content: center;
+    display: none;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--color-bg2); border-radius: 14px;
+    padding: 32px; width: 420px; max-width: 95vw;
+    border: 1px solid var(--color-bg3);
+  }
+  .modal h3 { font-size: 17px; font-weight: 800; margin-bottom: 20px; }
+  .modal label { font-size: 12px; font-weight: 700; color: var(--color-text-secondary); display: block; margin-bottom: 5px; }
+  .modal input, .modal select, .modal textarea {
+    width: 100%; padding: 10px 12px; margin-bottom: 14px;
+    background: var(--color-bg3); border: 1px solid #333;
+    border-radius: 8px; color: var(--color-text);
+    font-family: 'Montserrat', sans-serif; font-size: 13px; outline: none;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--color-primary); }
+  .modal select option { background: var(--color-bg3); }
+  .modal textarea { resize: vertical; min-height: 70px; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 4px; }
+  .btn-primary {
+    flex: 1; padding: 11px; background: var(--color-primary); color: #fff;
+    border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .85; }
+  .btn-secondary {
+    flex: 1; padding: 11px; background: var(--color-bg3); color: var(--color-text-secondary);
+    border: 1px solid #333; border-radius: 8px; font-family: 'Montserrat', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s;
+  }
+  .btn-secondary:hover { border-color: #555; color: var(--color-text); }
+
+  /* WHATSAPP */
+  .wa-section { margin-bottom: 36px; }
+  .wa-section h3 {
+    font-size: 15px; font-weight: 800; margin-bottom: 16px;
+    color: var(--color-accent);
+  }
+  .script-card {
+    background: var(--color-bg2); border-radius: 10px;
+    padding: 20px; margin-bottom: 12px;
+    border: 1px solid var(--color-bg3); position: relative;
+  }
+  .script-card h4 {
+    font-size: 12px; font-weight: 800; color: var(--color-primary);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .script-text {
+    font-size: 13px; line-height: 1.7; color: var(--color-text);
+    white-space: pre-wrap; font-family: 'Montserrat', sans-serif;
+  }
+  .script-text em { color: var(--color-primary); font-style: normal; font-weight: 700; }
+  .btn-copy {
+    margin-top: 14px; padding: 8px 16px;
+    background: var(--color-bg3); border: 1px solid #444;
+    border-radius: 8px; color: var(--color-text-secondary);
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: all .15s;
+  }
+  .btn-copy:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .btn-copy.copied { border-color: var(--color-accent); color: var(--color-accent); }
+
+  .followup-table {
+    width: 100%; border-collapse: collapse;
+    background: var(--color-bg2); border-radius: 10px;
+    overflow: hidden; border: 1px solid var(--color-bg3);
+  }
+  .followup-table th {
+    background: var(--color-bg3); padding: 12px 16px;
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--color-text-secondary); text-align: left;
+  }
+  .followup-table td {
+    padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--color-bg3);
+  }
+  .followup-table td:first-child {
+    font-weight: 700; color: var(--color-primary); width: 60px;
+  }
+
+  /* EMAILS */
+  .email-tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+  .email-tab {
+    padding: 9px 20px; border-radius: 8px;
+    background: var(--color-bg2); border: 1px solid var(--color-bg3);
+    color: var(--color-text-secondary); font-family: 'Montserrat', sans-serif;
+    font-size: 12px; font-weight: 700; cursor: pointer; transition: all .15s;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .email-tab:hover { border-color: #555; color: var(--color-text); }
+  .email-tab.active { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+
+  .email-panel { display: none; }
+  .email-panel.active { display: block; }
+
+  .email-card {
+    background: var(--color-bg2); border-radius: 10px;
+    border: 1px solid var(--color-bg3); margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .email-card-header {
+    padding: 16px 20px; background: var(--color-bg3);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .email-num {
+    background: var(--color-primary); color: #fff;
+    font-size: 11px; font-weight: 800; padding: 4px 10px;
+    border-radius: 20px; white-space: nowrap;
+  }
+  .email-day {
+    font-size: 11px; color: var(--color-text-secondary);
+    font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+  }
+  .email-subject {
+    font-size: 14px; font-weight: 700; flex: 1;
+  }
+  .email-body {
+    padding: 20px; font-size: 13px; line-height: 1.8;
+    color: var(--color-text); white-space: pre-wrap;
+  }
+  .email-cta {
+    display: inline-block; margin-top: 12px;
+    color: var(--color-primary); font-weight: 700; font-size: 13px;
+  }
+  .email-copy-row { padding: 0 20px 16px; }
+
+  /* MÉTRICAS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px; margin-bottom: 32px;
+  }
+  .metric-card {
+    background: var(--color-bg2); border-radius: 12px;
+    padding: 24px 20px; border: 1px solid var(--color-bg3);
+    text-align: center;
+  }
+  .metric-value {
+    font-size: 42px; font-weight: 800; line-height: 1;
+    color: var(--color-primary); margin-bottom: 8px;
+  }
+  .metric-value.accent { color: var(--color-accent); }
+  .metric-value.danger { color: var(--color-danger); }
+  .metric-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--color-text-secondary);
+  }
+  .btn-refresh {
+    padding: 10px 20px;
+    background: var(--color-bg3); border: 1px solid #444;
+    border-radius: 8px; color: var(--color-text-secondary);
+    font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+    cursor: pointer; transition: all .15s; margin-bottom: 24px;
+  }
+  .btn-refresh:hover { border-color: var(--color-accent); color: var(--color-accent); }
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="logo">TusLlavesTusBTC</div>
+    <h2>CRM Privado</h2>
+    <input type="password" id="pwd-input" placeholder="Contraseña" autocomplete="off">
+    <button class="btn-auth" onclick="checkAuth()">Ingresar</button>
+    <div class="auth-error" id="auth-error">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main-app">
+  <div class="topbar">
+    <div class="topbar-brand">TLTBTC · CRM</div>
+    <nav class="topbar-nav">
+      <button class="nav-btn active" onclick="showSection('pipeline', this)">Pipeline</button>
+      <button class="nav-btn" onclick="showSection('whatsapp', this)">WhatsApp</button>
+      <button class="nav-btn" onclick="showSection('emails', this)">Emails</button>
+      <button class="nav-btn" onclick="showSection('metricas', this)">Métricas</button>
+    </nav>
+  </div>
+
+  <div class="content">
+
+    <!-- PIPELINE -->
+    <div id="section-pipeline" class="section active">
+      <div class="section-title">Pipeline CRM</div>
+      <div class="pipeline-board" id="pipeline-board"></div>
+    </div>
+
+    <!-- WHATSAPP -->
+    <div id="section-whatsapp" class="section">
+      <div class="section-title">Scripts de primer contacto</div>
+
+      <div class="wa-section">
+        <h3>Script base personalizable</h3>
+        <div class="script-card">
+          <h4>Template universal</h4>
+          <div class="script-text">Hola <em>[nombre]</em>, vi tu perfil.
+
+Basado en lo que completaste, el punto más importante a resolver para vos en este momento es <em>[GAP PRINCIPAL]</em>.
+
+¿Tenés 15 minutos esta semana para que lo revisemos juntos?
+Puedo ser <em>[día]</em> a las <em>[hora]</em> o <em>[día]</em> a las <em>[hora]</em>.</div>
+          <button class="btn-copy" onclick="copyScript(this, 'Hola [nombre], vi tu perfil.\n\nBasado en lo que completaste, el punto más importante a resolver para vos en este momento es [GAP PRINCIPAL].\n\n¿Tenés 15 minutos esta semana para que lo revisemos juntos?\nPuedo ser [día] a las [hora] o [día] a las [hora].')">Copiar</button>
+        </div>
+      </div>
+
+      <div class="wa-section">
+        <h3>Scripts por nivel</h3>
+
+        <div class="script-card">
+          <h4>Básico</h4>
+          <div class="script-text">Hola <em>[nombre]</em>, vi tu perfil.
+
+Tu Bitcoin todavía está en un exchange, lo que significa que técnicamente no es tuyo si el exchange cierra.
+
+¿Tenés 15 minutos esta semana para que lo revisemos juntos?
+Puedo ser <em>[día]</em> a las <em>[hora]</em> o <em>[día]</em> a las <em>[hora]</em>.</div>
+          <button class="btn-copy" onclick="copyScript(this, 'Hola [nombre], vi tu perfil.\n\nTu Bitcoin todavía está en un exchange, lo que significa que técnicamente no es tuyo si el exchange cierra.\n\n¿Tenés 15 minutos esta semana para que lo revisemos juntos?\nPuedo ser [día] a las [hora] o [día] a las [hora].')">Copiar</button>
+        </div>
+
+        <div class="script-card">
+          <h4>Intermedio</h4>
+          <div class="script-text">Hola <em>[nombre]</em>, vi tu perfil.
+
+Tenés hardware wallet pero no pudiste confirmarme que tu backup fue verificado alguna vez.
+
+¿Tenés 15 minutos esta semana para que lo revisemos juntos?
+Puedo ser <em>[día]</em> a las <em>[hora]</em> o <em>[día]</em> a las <em>[hora]</em>.</div>
+          <button class="btn-copy" onclick="copyScript(this, 'Hola [nombre], vi tu perfil.\n\nTenés hardware wallet pero no pudiste confirmarme que tu backup fue verificado alguna vez.\n\n¿Tenés 15 minutos esta semana para que lo revisemos juntos?\nPuedo ser [día] a las [hora] o [día] a las [hora].')">Copiar</button>
+        </div>
+
+        <div class="script-card">
+          <h4>Avanzado</h4>
+          <div class="script-text">Hola <em>[nombre]</em>, vi tu perfil.
+
+Tu setup técnico es sólido pero no mencionaste tener un plan de herencia documentado.
+
+¿Tenés 15 minutos esta semana para que lo revisemos juntos?
+Puedo ser <em>[día]</em> a las <em>[hora]</em> o <em>[día]</em> a las <em>[hora]</em>.</div>
+          <button class="btn-copy" onclick="copyScript(this, 'Hola [nombre], vi tu perfil.\n\nTu setup técnico es sólido pero no mencionaste tener un plan de herencia documentado.\n\n¿Tenés 15 minutos esta semana para que lo revisemos juntos?\nPuedo ser [día] a las [hora] o [día] a las [hora].')">Copiar</button>
+        </div>
+
+        <div class="script-card">
+          <h4>Urgente</h4>
+          <div class="script-text">Hola <em>[nombre]</em>, vi que tu consulta es urgente.
+
+Te propongo hablar hoy mismo — ¿a qué hora te queda bien?</div>
+          <button class="btn-copy" onclick="copyScript(this, 'Hola [nombre], vi que tu consulta es urgente.\n\nTe propongo hablar hoy mismo — ¿a qué hora te queda bien?')">Copiar</button>
+        </div>
+      </div>
+
+      <div class="wa-section">
+        <h3>Protocolo de seguimiento</h3>
+        <table class="followup-table">
+          <thead>
+            <tr><th>Día</th><th>Acción</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Primer contacto WA (script personalizado)</td></tr>
+            <tr><td>3</td><td>Si no responde: seguimiento "¿Pudiste ver mi mensaje?"</td></tr>
+            <tr><td>7</td><td>Si sigue sin responder: mensaje de valor (dato/consejo)</td></tr>
+            <tr><td>14</td><td>Si nada: mover a nurturing email</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMAILS -->
+    <div id="section-emails" class="section">
+      <div class="section-title">Secuencias de Email</div>
+      <div class="email-tabs">
+        <button class="email-tab active" onclick="showEmailTab('basico', this)">Básico</button>
+        <button class="email-tab" onclick="showEmailTab('intermedio', this)">Intermedio</button>
+        <button class="email-tab" onclick="showEmailTab('avanzado', this)">Avanzado</button>
+      </div>
+
+      <!-- BASICO -->
+      <div class="email-panel active" id="email-basico">
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E1</span>
+            <span class="email-day">Día 0</span>
+            <span class="email-subject">Tu Bitcoin en exchange no es realmente tuyo</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Hay algo que mucha gente que tiene Bitcoin no sabe hasta que es demasiado tarde:
+
+Si tu Bitcoin está en un exchange, técnicamente no te pertenece.
+
+El exchange tiene las claves privadas. Vos tenés un número en una pantalla.
+
+¿Recordás FTX? En noviembre de 2022, millones de personas se levantaron y descubrieron que no podían retirar su Bitcoin. El exchange había colapsado. Sus fondos — esfumados.
+
+No porque los hubieran robado directamente. Sino porque nunca habían tenido la custodia real.
+
+"Not your keys, not your coins" no es un meme. Es la diferencia entre tener Bitcoin y creer que tenés Bitcoin.
+
+El primer paso para cambiar esto es entender dónde estás parado hoy.
+
+→ Completá el formulario de perfil y te digo exactamente qué necesitás hacer: [LINK]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E2</span>
+            <span class="email-day">Día 3</span>
+            <span class="email-subject">El error que comete el 90% de los que tienen Bitcoin</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Te voy a contar algo que casi nunca se habla.
+
+El 90% de las personas que tienen Bitcoin — incluso las que lo compraron hace años — no tienen un backup funcional de sus claves.
+
+Sin backup = sin Bitcoin.
+
+No porque alguien te lo robe. Sino porque si perdés el dispositivo, si se rompe, si te olvidás el PIN… ese Bitcoin se va para siempre. A ningún lado. Se queda bloqueado en la blockchain para siempre.
+
+Conozco el caso de un hombre en Gales que tiró sin querer un disco rígido con 7.500 BTC en 2013. Hoy estarían valuados en cientos de millones. Lleva años tratando de recuperarlos y no puede.
+
+No necesitás cometer ese error.
+
+¿Sabés si tu backup está bien hecho y en un lugar seguro?
+
+→ Hacé el quiz de 5 minutos y descubrís tu nivel real: [LINK]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E3</span>
+            <span class="email-day">Día 7</span>
+            <span class="email-subject">¿Qué pasaría con tu Bitcoin si te pasara algo?</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Una pregunta incómoda pero necesaria:
+
+Si mañana no pudieras acceder a tus cuentas, ¿tu familia podría recuperar tu Bitcoin?
+
+No hablo de tu banco. El banco tiene protocolos para eso. Hablo de tu Bitcoin — que por definición está fuera del sistema tradicional.
+
+Si nadie más sabe dónde están las claves, o cómo acceder a ellas, ese Bitcoin se pierde. Para siempre.
+
+No es un tema de edad. No es un tema de "todavía soy joven". Es un tema de responsabilidad sobre lo que construiste.
+
+Un plan de herencia Bitcoin no es complicado. Pero requiere hacerlo bien desde el principio.
+
+¿Querés que lo revisemos juntos?
+
+→ Agendá una consulta gratuita de 15 minutos: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E4</span>
+            <span class="email-day">Día 14</span>
+            <span class="email-subject">Checklist: ¿Está segura tu custodia?</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+5 preguntas rápidas. Respondelas mentalmente:
+
+1. ¿Tu Bitcoin está en self-custody (no en un exchange)?
+2. ¿Tenés un backup físico de tu seed phrase en un lugar seguro?
+3. ¿Ese backup fue verificado al menos una vez?
+4. ¿Alguien de confianza sabe cómo acceder si te pasara algo?
+5. ¿Tenés un plan documentado para tus herederos?
+
+Si respondiste "no" o "no sé" a alguna de estas preguntas, hay trabajo por hacer.
+
+No es para asustarte. Es para que lo hagas bien, una vez, y puedas dormir tranquilo el resto.
+
+→ Hablemos. Reservá 15 minutos: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- INTERMEDIO -->
+      <div class="email-panel" id="email-intermedio">
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E1</span>
+            <span class="email-day">Día 0</span>
+            <span class="email-subject">Tenés hardware wallet. ¿Pero está bien configurada?</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Tener una hardware wallet es un paso enorme. La mayoría de la gente ni llega ahí.
+
+Pero hay 3 errores que cometen incluso los que ya tienen hardware wallet:
+
+1. El backup de la seed phrase está en el mismo lugar físico que el dispositivo.
+   (Si hay un incendio o robo, perdés todo junto.)
+
+2. El backup nunca fue verificado.
+   (Escribiste las palabras, pero ¿probaste que podés restaurar con ellas?)
+
+3. La passphrase adicional (el "25° palabra") no está documentada en ningún lado.
+   (O peor: la passphrase está documentada junto a la seed phrase.)
+
+¿Alguno de estos aplica a tu situación?
+
+No te pregunto para juzgarte. Te pregunto porque son los mismos errores que corrijo en el 80% de las auditorías que hago.
+
+→ Hablemos: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E2</span>
+            <span class="email-day">Día 4</span>
+            <span class="email-subject">¿Tu familia sabe cómo acceder a tu Bitcoin?</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Pensalo un segundo.
+
+Vos sabés cómo acceder a tu Bitcoin. Entendés las claves, el proceso, la wallet.
+
+¿Pero tu familia lo sabe?
+
+No hablo de "les contaste que tenés Bitcoin". Hablo de que si no estuvieras — si mañana no pudieras explicarlo — ¿podrían recuperarlo?
+
+La mayoría de los que tienen hardware wallet no tienen un plan de acceso documentado para terceros.
+
+Y eso significa que si algo pasa, ese Bitcoin se pierde para siempre. No va a una cuenta bancaria que el banco puede rastrear. Desaparece.
+
+Este es el gap que más duele cuando pasa, y el más fácil de resolver antes de que pase.
+
+→ Te muestro cómo documentarlo de forma segura: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E3</span>
+            <span class="email-day">Día 9</span>
+            <span class="email-subject">Multisig: por qué los que saben de verdad lo usan</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Hay un estándar de seguridad que usan los que custodian Bitcoin en serio.
+
+Se llama multisig (multi-firma).
+
+La idea es simple: en lugar de que una sola clave controle tus fondos, necesitás múltiples claves para autorizar una transacción. Por ejemplo: 2 de 3, o 3 de 5.
+
+Esto significa que:
+- Un solo dispositivo comprometido no pierde todo
+- Se puede diseñar para herencia (un familiar puede tener una llave, otra va al abogado)
+- Es mucho más resistente a robos físicos y digitales
+
+La mayoría de los usuarios con hardware wallet todavía están en single-sig. Es mejor que un exchange, pero no es el nivel máximo.
+
+¿Querés saber si multisig tiene sentido para tu situación?
+
+→ Auditamos tu setup actual: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E4</span>
+            <span class="email-day">Día 15</span>
+            <span class="email-subject">Oferta puntual: auditoría de tu setup actual</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Quería hacerte una propuesta directa.
+
+Tengo disponibilidad esta semana para hacer una auditoría completa de tu setup de custodia.
+
+¿Qué incluye?
+→ Revisión de tu esquema actual (wallet, backup, passphrase)
+→ Identificación de los 3 riesgos más críticos para tu situación
+→ Hoja de ruta personalizada para cerrarlos
+→ 60 minutos de sesión 1 a 1
+
+Inversión: $99 USD
+
+No es una consulta genérica. Es una revisión real de tu caso específico con recomendaciones que podés implementar la misma semana.
+
+¿Te interesa? Respondé este email o reservá directo:
+
+→ [LINK CAL.COM / PAGO]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AVANZADO -->
+      <div class="email-panel" id="email-avanzado">
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E1</span>
+            <span class="email-day">Día 0</span>
+            <span class="email-subject">Setup avanzado no es lo mismo que setup completo</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Basado en tu perfil, tu setup técnico está en un nivel que pocos alcanzan.
+
+Pero hay una trampa en la que caen incluso los usuarios avanzados:
+
+Confundir setup técnico sólido con setup completo.
+
+Los gaps que más aparecen en perfiles como el tuyo no son técnicos. Son estos:
+
+1. Herencia no documentada formalmente
+   (Sabés cómo funciona multisig. ¿Tu heredero también?)
+
+2. Opsec física subestimada
+   (¿Dónde están físicamente tus backups? ¿Alguien sabe que existen?)
+
+3. Sin wallet señuelo activa
+   (Si alguien te exige las claves bajo presión, ¿qué entregás?)
+
+4. El plan nunca fue simulado
+   (Un plan que no fue probado no es un plan. Es una intención.)
+
+No digo que los tenés todos. Pero vale la pena revisarlos.
+
+→ Hablemos: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E2</span>
+            <span class="email-day">Día 5</span>
+            <span class="email-subject">¿Tu plan de herencia fue probado alguna vez?</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Hay una diferencia enorme entre "tengo un plan" y "el plan fue verificado".
+
+La mayoría de los usuarios con setups avanzados tienen algo escrito. Instrucciones. Un sobre. Un documento.
+
+Pero nunca lo simularon.
+
+¿Qué significa simularlo?
+→ Que alguien de confianza (un familiar, un abogado, un amigo) intente seguir el proceso desde cero, sin tu ayuda.
+→ Que veas dónde se traba. Qué no entiende. Qué falta.
+
+La mayoría descubre que hay un paso crítico que asumieron obvio y no lo es.
+
+Un plan que no fue probado tiene una tasa de falla desconocida. Puede ser 0%. Puede ser 100%. No lo sabés hasta que se necesita, y para entonces es tarde.
+
+→ Te ayudo a diseñar la simulación y cerrar los gaps: [LINK CAL.COM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+        <div class="email-card">
+          <div class="email-card-header">
+            <span class="email-num">E3</span>
+            <span class="email-day">Día 12</span>
+            <span class="email-subject">Negación plausible: la herramienta que pocos conocen</span>
+          </div>
+          <div class="email-body">Hola [nombre],
+
+Existe un vector de ataque que la mayoría no considera en su modelo de amenazas:
+
+La coerción física. El "wrench attack".
+
+Alguien te exige las claves bajo presión. Es raro. Pero si tu perfil es público, o si alguien sabe que tenés Bitcoin, es un riesgo real.
+
+La solución se llama negación plausible.
+
+¿Cómo funciona?
+→ Usás una passphrase adicional para crear una segunda wallet "real" con la mayoría de tus fondos.
+→ La wallet sin passphrase — accesible solo con la seed — tiene una cantidad pequeña pero creíble (un señuelo).
+→ Si te exigen las claves, entregás la seed. El atacante accede al señuelo. La wallet real queda intacta.
+
+Es elegante, efectivo, y relativamente simple de implementar si ya tenés hardware wallet.
+
+¿Lo tenés configurado en tu setup actual?
+
+→ Si querés implementarlo correctamente: [LINK CAL.COM / SERVICIO PREMIUM]
+
+Matías
+TusLlavesTusBTC</div>
+          <div class="email-copy-row">
+            <button class="btn-copy" onclick="copyEmailCard(this)">Copiar email</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MÉTRICAS -->
+    <div id="section-metricas" class="section">
+      <div class="section-title">Métricas Rápidas</div>
+      <button class="btn-refresh" onclick="renderMetrics()">Actualizar métricas</button>
+      <div class="metrics-grid" id="metrics-grid"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL NUEVO LEAD -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3 id="modal-title">Nuevo Lead</h3>
+    <label>Nombre *</label>
+    <input type="text" id="f-nombre" placeholder="Ej: Juan García">
+    <label>Email</label>
+    <input type="email" id="f-email" placeholder="juan@email.com">
+    <label>WhatsApp</label>
+    <input type="text" id="f-wa" placeholder="+54 9 11...">
+    <label>Nivel técnico</label>
+    <select id="f-nivel">
+      <option value="sin_datos">Sin datos</option>
+      <option value="basico">Básico</option>
+      <option value="intermedio">Intermedio</option>
+      <option value="avanzado">Avanzado</option>
+      <option value="experto">Experto</option>
+    </select>
+    <label>Score (0-100)</label>
+    <input type="number" id="f-score" min="0" max="100" placeholder="0">
+    <label>Fuente</label>
+    <select id="f-fuente">
+      <option value="formulario-perfil">Formulario de perfil</option>
+      <option value="quiz">Quiz</option>
+      <option value="referido">Referido</option>
+      <option value="directo">Directo</option>
+    </select>
+    <label>Notas</label>
+    <textarea id="f-notas" placeholder="Notas adicionales..."></textarea>
+    <div class="modal-btns">
+      <button class="btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveLead()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// === AUTH ===
+const PASSWORD = 'TLTBTC2025';
+
+function checkAuth() {
+  const val = document.getElementById('pwd-input').value;
+  if (val === PASSWORD) {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('auth-error').style.display = 'block';
+    document.getElementById('pwd-input').value = '';
+  }
+}
+document.getElementById('pwd-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkAuth();
+});
+
+// === NAVIGATION ===
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'metricas') renderMetrics();
+}
+
+function showEmailTab(id, btn) {
+  document.querySelectorAll('.email-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.email-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('email-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// === DATA ===
+const STAGES = ['captado', 'contactado', 'llamada', 'form_conocimiento', 'propuesta', 'cliente'];
+const STAGE_LABELS = {
+  captado: 'Captado',
+  contactado: 'Contactado',
+  llamada: 'Llamada',
+  form_conocimiento: 'Form Conocimiento',
+  propuesta: 'Propuesta',
+  cliente: 'Cliente'
+};
+const NIVEL_LABELS = {
+  sin_datos: 'Sin datos', basico: 'Básico',
+  intermedio: 'Intermedio', avanzado: 'Avanzado', experto: 'Experto'
+};
+
+function getLeads() {
+  return JSON.parse(localStorage.getItem('tltbtc_leads') || '[]');
+}
+function saveLeads(leads) {
+  localStorage.setItem('tltbtc_leads', JSON.stringify(leads));
+}
+
+// === PIPELINE ===
+let currentStageForModal = 'captado';
+let draggingId = null;
+
+function init() {
+  renderBoard();
+}
+
+function renderBoard() {
+  const board = document.getElementById('pipeline-board');
+  board.innerHTML = '';
+  const leads = getLeads();
+  STAGES.forEach(stage => {
+    const col = document.createElement('div');
+    col.className = 'kanban-col';
+    col.dataset.stage = stage;
+
+    const stageLeads = leads.filter(l => l.stage === stage);
+    const isCliente = stage === 'cliente';
+    const countClass = isCliente ? 'col-count clientes' : 'col-count';
+
+    col.innerHTML = `
+      <div class="col-header">
+        <span class="col-title">${STAGE_LABELS[stage]}</span>
+        <span class="${countClass}" id="count-${stage}">${stageLeads.length}</span>
+      </div>
+      <div class="col-cards" id="cards-${stage}" ondragover="onDragOver(event)" ondrop="onDrop(event, '${stage}')" ondragleave="onDragLeave(event)"></div>
+      <div class="col-footer">
+        <button class="btn-new-lead" onclick="openModal('${stage}')">+ Nuevo lead</button>
+      </div>
+    `;
+    board.appendChild(col);
+
+    // render cards
+    const cardsEl = col.querySelector('.col-cards');
+    stageLeads.forEach(lead => {
+      cardsEl.appendChild(makeCard(lead));
+    });
+  });
+}
+
+function makeCard(lead) {
+  const el = document.createElement('div');
+  el.className = 'lead-card';
+  el.dataset.id = lead.id;
+  el.draggable = true;
+
+  const isAlerta = lead.stage === 'propuesta' && isOver48h(lead.lastMoved);
+  if (isAlerta) el.classList.add('alerta');
+
+  const stageIdx = STAGES.indexOf(lead.stage);
+  const hasPrev = stageIdx > 0;
+  const hasNext = stageIdx < STAGES.length - 1;
+
+  el.innerHTML = `
+    <div class="lead-name">${escHtml(lead.nombre)}</div>
+    <div class="lead-meta">
+      <span class="badge-nivel badge-${lead.nivel}">${NIVEL_LABELS[lead.nivel] || lead.nivel}</span>
+      <span class="lead-score">Score: ${lead.score}</span>
+    </div>
+    <div class="lead-fuente">${lead.fuente || ''}</div>
+    <div class="lead-date">${formatDate(lead.createdAt)}</div>
+    <div class="lead-actions">
+      ${hasPrev ? `<button class="btn-move" onclick="moveLead('${lead.id}', -1)">← Atrás</button>` : '<span style="flex:1"></span>'}
+      ${hasNext ? `<button class="btn-move" onclick="moveLead('${lead.id}', 1)">Adelante →</button>` : '<span style="flex:1"></span>'}
+      <button class="btn-delete-lead" onclick="deleteLead('${lead.id}')" title="Eliminar">✕</button>
+    </div>
+  `;
+
+  el.addEventListener('dragstart', e => {
+    draggingId = lead.id;
+    el.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('dragging');
+    draggingId = null;
+  });
+
+  return el;
+}
+
+function isOver48h(ts) {
+  if (!ts) return false;
+  return (Date.now() - new Date(ts).getTime()) > 48 * 3600 * 1000;
+}
+function formatDate(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function moveLead(id, dir) {
+  const leads = getLeads();
+  const lead = leads.find(l => l.id === id);
+  if (!lead) return;
+  const idx = STAGES.indexOf(lead.stage);
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= STAGES.length) return;
+  lead.stage = STAGES[newIdx];
+  lead.lastMoved = new Date().toISOString();
+  saveLeads(leads);
+  renderBoard();
+}
+
+function deleteLead(id) {
+  if (!confirm('¿Eliminar este lead?')) return;
+  let leads = getLeads();
+  leads = leads.filter(l => l.id !== id);
+  saveLeads(leads);
+  renderBoard();
+}
+
+// drag & drop
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.closest('.kanban-col').classList.add('drag-over');
+}
+function onDragLeave(e) {
+  e.currentTarget.closest('.kanban-col').classList.remove('drag-over');
+}
+function onDrop(e, stage) {
+  e.preventDefault();
+  const col = e.currentTarget.closest('.kanban-col');
+  col.classList.remove('drag-over');
+  if (!draggingId) return;
+  const leads = getLeads();
+  const lead = leads.find(l => l.id === draggingId);
+  if (!lead || lead.stage === stage) return;
+  lead.stage = stage;
+  lead.lastMoved = new Date().toISOString();
+  saveLeads(leads);
+  renderBoard();
+}
+
+// === MODAL ===
+function openModal(stage) {
+  currentStageForModal = stage;
+  document.getElementById('modal-title').textContent = `Nuevo Lead — ${STAGE_LABELS[stage]}`;
+  ['f-nombre','f-email','f-wa','f-notas'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-nivel').value = 'sin_datos';
+  document.getElementById('f-score').value = '0';
+  document.getElementById('f-fuente').value = 'formulario-perfil';
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('f-nombre').focus(), 50);
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+
+function saveLead() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  if (!nombre) { alert('El nombre es requerido'); return; }
+  const lead = {
+    id: 'lead_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    nombre,
+    email: document.getElementById('f-email').value.trim(),
+    wa: document.getElementById('f-wa').value.trim(),
+    nivel: document.getElementById('f-nivel').value,
+    score: parseInt(document.getElementById('f-score').value) || 0,
+    fuente: document.getElementById('f-fuente').value,
+    notas: document.getElementById('f-notas').value.trim(),
+    stage: currentStageForModal,
+    createdAt: new Date().toISOString(),
+    lastMoved: new Date().toISOString()
+  };
+  const leads = getLeads();
+  leads.push(lead);
+  saveLeads(leads);
+  closeModal();
+  renderBoard();
+}
+
+// === COPY ===
+function copyScript(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '¡Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+function copyEmailCard(btn) {
+  const card = btn.closest('.email-card');
+  const subject = card.querySelector('.email-subject').textContent;
+  const body = card.querySelector('.email-body').textContent;
+  const full = `Asunto: ${subject}\n\n${body}`;
+  navigator.clipboard.writeText(full).then(() => {
+    btn.textContent = '¡Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar email'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// === MÉTRICAS ===
+function renderMetrics() {
+  const leads = getLeads();
+  const total = leads.length;
+  const enPropuesta = leads.filter(l => l.stage === 'propuesta').length;
+  const clientes = leads.filter(l => l.stage === 'cliente').length;
+  const tasa = total > 0 ? Math.round((clientes / total) * 100) : 0;
+  const alertas = leads.filter(l => l.stage === 'propuesta' && isOver48h(l.lastMoved)).length;
+
+  const grid = document.getElementById('metrics-grid');
+  grid.innerHTML = `
+    <div class="metric-card">
+      <div class="metric-value">${total}</div>
+      <div class="metric-label">Total leads captados</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">${enPropuesta}</div>
+      <div class="metric-label">En propuesta (activos)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value accent">${clientes}</div>
+      <div class="metric-label">Clientes cerrados</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">${tasa}%</div>
+      <div class="metric-label">Tasa captado→cliente</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value ${alertas > 0 ? 'danger' : ''}">${alertas}</div>
+      <div class="metric-label">Alertas +48hs en propuesta</div>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
